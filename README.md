@@ -2,7 +2,7 @@
 
 The ChatGPT File Plugin is a browser plugin that adds functionality to the ChatGPT interface. It allows users to save conversations with ChatGPT in various formats and also provides the ability to upload files into the ChatGPT input box.
 
-![image-20230605153937932](E:\Project\chatgpt\image\main.png)
+![image-20230605153937932]((https://github.com/Eunyn/chatgpt/blob/main/image/main.png))
 
 ## Features
 
