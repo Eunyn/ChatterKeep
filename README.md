@@ -53,11 +53,11 @@ Please note that for large files, the plugin will automatically divide them into
 
   - Export in markdown format
 
-    ![image-20230605171325716](E:\Project\chatgpt\README.assets\image-20230605171325716.png)
+    ![image-20230605171325716](https://github.com/Eunyn/chatgpt/blob/main/image/markdown.png)
 
   - Export in text format
 
-    ![image-20230605171448707](E:\Project\chatgpt\README.assets\image-20230605171448707.png)
+    ![image-20230605171448707](https://github.com/Eunyn/chatgpt/blob/main/image/text.png)
 
 - Uploading Files:
 
