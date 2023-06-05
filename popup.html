@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ChatGPT Q&A Extractor</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://*; child-src 'none';"/>
+  <style>
+    body {
+      width: 240px;
+      padding: 10px;
+    }
+    
+    button {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      color: white;
+      font-weight: bold;
+      padding: 10px;
+      text-align: center;
+    }
+    
+    #saveButton {
+      background-color: blue;
+    }
+    
+    #markdownButton {
+      background-color: cyan;
+    }
+    
+    #textButton {
+      background-color: green;
+    }
+  </style>
+  <script src="popup.js"></script>
+  <!-- <script src="content.js"></script> -->
+  <script type="text/javascript" src="https://unpkg.com/jspdf@2.0.0/dist/jspdf.umd.min.js"></script>
+</head>
+<body>
+  <div id="button">
+    <button id="saveButton">Save as PDF</button>
+  </div>
+</body>
+</html>
