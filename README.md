@@ -51,7 +51,7 @@ Please note that for large files, the plugin will automatically divide them into
 
   - Export in PDF format
 
-    ![image-20230605205647726](E:\Project\chatgpt\image\pdf.png)
+    ![image-20230605205647726](https://github.com/Eunyn/chatgpt/blob/main/image/pdf.png)
 
   - Export in markdown format
 
