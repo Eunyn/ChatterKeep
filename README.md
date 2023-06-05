@@ -47,7 +47,7 @@ Please note that for large files, the plugin will automatically divide them into
 
 ## Contributing
 
-Contributions to the ChatGPT File Exporter Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
+Contributions to the ChatGPT File Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
 
 ## License
 
