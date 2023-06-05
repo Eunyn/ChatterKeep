@@ -75,7 +75,7 @@ function saveQAndAAsMarkdown() {
 
     const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
     markdownContent += `**Q${i + 1}:** ${questionWithoutPageNumber}\n\n`;
-    markdownContent += '```html\n';
+    markdownContent += '```markdown\n';
     markdownContent += `${answer}\n`;
     markdownContent += '```\n\n';
   }
@@ -100,7 +100,8 @@ function saveQAndAAsText() {
     const question = questionElements[i].textContent;
     const answer = answerElements[i].textContent;
 
-    textContent += `Q: ${question}\n`;
+    const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
+    textContent += `Q${i + 1}: ${questionWithoutPageNumber}\n`;
     textContent += `A: ${answer}\n\n`;
   }
 
