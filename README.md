@@ -45,6 +45,24 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 
 Please note that for large files, the plugin will automatically divide them into batches for importing into ChatGPT.
 
+# Show
+
+- Exporting Conversations:
+
+  - Export in PDF format
+
+  - Export in markdown format
+
+    ![image-20230605171325716](E:\Project\chatgpt\README.assets\image-20230605171325716.png)
+
+  - Export in text format
+
+    ![image-20230605171448707](E:\Project\chatgpt\README.assets\image-20230605171448707.png)
+
+- Uploading Files:
+
+  
+
 ## Contributing
 
 Contributions to the ChatGPT File Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
