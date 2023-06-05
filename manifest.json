@@ -16,24 +16,8 @@
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],
-      "js": ["popup.js"],
-      // "js": ["content.js"],
+      "js": ["content.js"],
       "run_at": "document_end"
     }
   ]
-  // "action": {
-  //   // "default_popup": "popup.html",
-  //   "default_icon": {
-  //     "16": "icon16.png",
-  //     "48": "icon48.png",
-  //     "128": "icon128.png"
-  //   },
-  //   "default_title": "ChatGPT Q&A Extractor"
-  // },
-  // "web_accessible_resources": [
-  //   {
-  //     "resources": ["csp.js"],
-  //     "matches": ["https://chat.openai.com/*"]
-  //   }
-  // ]
 }

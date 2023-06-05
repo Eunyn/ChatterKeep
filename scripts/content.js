@@ -150,7 +150,6 @@ async function uploadFile() {
     input.click();
 }
 
-
 async function submitConversation(text, part, filename) {
   const textarea = document.querySelector("textarea[tabindex='0']");
   const enterKeyEvent = new KeyboardEvent('keydown', {
