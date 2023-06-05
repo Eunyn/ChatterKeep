@@ -51,5 +51,10 @@ Contributions to the ChatGPT File Exporter Plugin are welcome! If you find any i
 
 ## License
 
-This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).
+1. This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).
 
+   ```html
+   Contributions to the ChatGPT File Exporter Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
+   ```
+
+   

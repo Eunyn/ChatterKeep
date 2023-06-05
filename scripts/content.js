@@ -73,8 +73,11 @@ function saveQAndAAsMarkdown() {
     const question = questionElements[i].textContent.trim();
     const answer = answerElements[i].textContent.trim();
 
-    markdownContent += `Q: ${question}\n`;
-    markdownContent += `A: ${answer}\n\n`;
+    const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
+    markdownContent += `**Q${i + 1}:** ${questionWithoutPageNumber}\n\n`;
+    markdownContent += '```html\n';
+    markdownContent += `${answer}\n`;
+    markdownContent += '```\n\n';
   }
 
   const fileName = 'converted_content.md';
