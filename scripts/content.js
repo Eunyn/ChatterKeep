@@ -11,7 +11,7 @@ function createButton() {
   pdfButton.id = 'pdfButton';
   pdfButton.textContent = 'PDF';
   pdfButton.style.color = 'blue';
-  // pdfButton.addEventListener('click', saveQAndAAsPDF);
+  pdfButton.addEventListener('click', saveQAndAAsPDF);
 
   const markdownButton = document.createElement('button');
   markdownButton.id = 'markdownButton';
@@ -52,15 +52,60 @@ document.addEventListener('mouseover', function() {
   if (!buttonCreated) {
     createButton();
   } else {
-    // DOMContentLoaded has already fired, create the button immediately
-    // document.addEventListener('DOMContentLoaded', saveQAndAAsText);
-    // saveQAndAAsText();
+    
   }
 });
 
 
 function saveQAndAAsPDF() {
+  // Create a new jsPDF instance
+  const doc = new window.jspdf.jsPDF();
+  const fontPath = './scripts/simsunb.ttf';
+  // Register the font with jsPDF
+  doc.addFileToVFS(fontPath, font);
+  doc.addFont(fontPath, 'simsunb', 'normal');
+  doc.setFont('simsunb');
 
+  const questionElements = document.querySelectorAll('.group.w-full.text-gray-800.dark\\:text-gray-100.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
+  const answerElements = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
+
+  let y = 8;
+
+  for (let i = 0; i < questionElements.length; i++) {
+    const question = questionElements[i].textContent.trim();
+    const answer = answerElements[i].textContent.trim();
+
+    // convert the question content
+    const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
+    const questionsLines = doc.splitTextToSize(questionWithoutPageNumber, 185);
+    doc.text(10, y, `Q${i + 1}: ${questionsLines[0]}`);
+    y += 8;
+    for (let j = 1; j < questionsLines.length; j++) {
+      if (y + 10 > doc.internal.pageSize.getHeight()) {
+        doc.addPage();
+        y = 8;
+      }
+      doc.text(10, y, `${questionsLines[j]}`);
+      y += 8;
+    }
+    y += 1;
+
+    // convert the answer content
+    const answerLines = doc.splitTextToSize(answer, 185);
+    doc.text(10, y, `A: ${answerLines[0]}`);
+    y += 8;
+    for (let j = 1; j < answerLines.length; j++) {
+      if (y + 10 > doc.internal.pageSize.getHeight()) {
+        doc.addPage();
+        y = 8;
+      }
+      doc.text(10, y, `${answerLines[j]}`);
+      y += 8;
+    }
+    y += 8;
+  }
+
+  doc.save('conversation.pdf');
 }
 
 

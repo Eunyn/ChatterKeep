@@ -51,6 +51,8 @@ Please note that for large files, the plugin will automatically divide them into
 
   - Export in PDF format
 
+    ![image-20230605205647726](E:\Project\chatgpt\image\pdf.png)
+
   - Export in markdown format
 
     ![image-20230605171325716](https://github.com/Eunyn/chatgpt/blob/main/image/markdown.png)
@@ -70,9 +72,5 @@ Contributions to the ChatGPT File Plugin are welcome! If you find any issues or 
 ## License
 
 1. This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).
-
-   ```html
-   Contributions to the ChatGPT File Exporter Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
-   ```
 
    
