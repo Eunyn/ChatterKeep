@@ -60,7 +60,7 @@ document.addEventListener('mouseover', function() {
 function saveQAndAAsPDF() {
   // Create a new jsPDF instance
   const doc = new window.jspdf.jsPDF();
-  const fontPath = './scripts/simsunb.ttf';
+  const fontPath = './fonts/simsunb.ttf';
   // Register the font with jsPDF
   doc.addFileToVFS(fontPath, font);
   doc.addFont(fontPath, 'simsunb', 'normal');
