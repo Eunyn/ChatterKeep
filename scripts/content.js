@@ -60,11 +60,11 @@ document.addEventListener('mouseover', function() {
 function saveQAndAAsPDF() {
   // Create a new jsPDF instance
   const doc = new window.jspdf.jsPDF();
-  const fontPath = './fonts/simsunb.ttf';
+  const fontPath = './fonts/simhei.ttf';
   // Register the font with jsPDF
   doc.addFileToVFS(fontPath, font);
-  doc.addFont(fontPath, 'simsunb', 'normal');
-  doc.setFont('simsunb');
+  doc.addFont(fontPath, 'simhei', 'normal');
+  doc.setFont('simhei');
 
   const questionElements = document.querySelectorAll('.group.w-full.text-gray-800.dark\\:text-gray-100.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
   const answerElements = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
