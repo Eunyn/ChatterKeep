@@ -46,6 +46,15 @@ async function createButton(targetElement) {
   }
 };
 
+let fileName = 'conversation';
+function getCurrentConversationName() {
+  const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+  if (currentConversationName) {
+    fileName = currentConversationName.textContent;
+  }
+}
+getCurrentConversationName();
+
 async function saveQAndAAsPDF() {
   // Create a new jsPDF instance
   const doc = new window.jspdf.jsPDF();
@@ -95,7 +104,7 @@ async function saveQAndAAsPDF() {
     y += 6;
   }
 
-  doc.save('conversation.pdf');
+  doc.save(fileName + '.pdf');
 }
 
 
@@ -115,7 +124,6 @@ async function saveQAndAAsMarkdown() {
     markdownContent += '```\n\n';
   }
 
-  const fileName = 'converted_content.md';
   const link = document.createElement('a');
   link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(markdownContent)}`;
   link.download = fileName;
@@ -142,8 +150,7 @@ async function saveQAndAAsText() {
 
   const link = document.createElement('a');
   link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(textContent)}`;
-  const fileName = document.querySelectorAll('.flex-1.text-ellipsis.max-h-5.overflow-hidden.break-all.relative');
-  link.download = 'Q&A';
+  link.download = fileName;
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
@@ -323,6 +330,7 @@ setInterval(() => {
   const parentElements = document.querySelector(".relative.flex.h-full.flex-1.items-stretch.md\\:flex-col");
   const saveConversation = parentElements.querySelector('#pdfButton');
   if (!saveConversation) {
+    getCurrentConversationName();
     createButton(target);
   }
 
