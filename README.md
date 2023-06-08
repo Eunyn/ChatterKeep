@@ -60,10 +60,14 @@ Please note that for large files, the plugin will automatically divide them into
   - Export in text format
 
     ![image-20230605171448707](https://github.com/Eunyn/chatgpt/blob/main/image/text.png)
+    
+  - Export code
+
+    ![image-20230608173907546](E:\Project\chatgpt\image\code)
 
 - Uploading Files:
 
-  
+  ![image-20230608174129414](E:\Project\chatgpt\image\upload)
 
 ## Contributing
 
