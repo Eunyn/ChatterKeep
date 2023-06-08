@@ -63,11 +63,11 @@ Please note that for large files, the plugin will automatically divide them into
     
   - Export code
 
-    ![image-20230608173907546](E:\Project\chatgpt\image\code)
+    ![image-20230608173907546](https://github.com/Eunyn/ChatterKeep/blob/main/image/code.png)
 
 - Uploading Files:
 
-  ![image-20230608174129414](E:\Project\chatgpt\image\upload)
+  ![image-20230608174129414](https://github.com/Eunyn/ChatterKeep/blob/main/image/upload.png)
 
 ## Contributing
 
