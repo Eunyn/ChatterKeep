@@ -46,16 +46,6 @@ async function createButton(targetElement) {
   }
 };
 
-setInterval(() => {
-  const target = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
-  const parentElements = document.querySelector(".relative.flex.h-full.flex-1.items-stretch.md\\:flex-col");
-  const saveConversation = parentElements.querySelector('#pdfButton');
-  if (!saveConversation) {
-    createButton(target);
-  }
-}, 1000);
-
-
 async function saveQAndAAsPDF() {
   // Create a new jsPDF instance
   const doc = new window.jspdf.jsPDF();
@@ -125,7 +115,7 @@ async function saveQAndAAsMarkdown() {
     markdownContent += '```\n\n';
   }
 
-  const fileName = 'conversation.md';
+  const fileName = 'converted_content.md';
   const link = document.createElement('a');
   link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(markdownContent)}`;
   link.download = fileName;
@@ -153,7 +143,7 @@ async function saveQAndAAsText() {
   const link = document.createElement('a');
   link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(textContent)}`;
   const fileName = document.querySelectorAll('.flex-1.text-ellipsis.max-h-5.overflow-hidden.break-all.relative');
-  link.download = 'conversation';
+  link.download = 'Q&A';
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
@@ -213,13 +203,13 @@ async function submitConversation(text, part, filename) {
 
 const addUpdateVscodeBtn = (codeContainer) => {
   // Check if the update button already exists in the container
-  if (codeContainer.querySelector("#update-vscode-btn")) {
+  if (codeContainer.querySelector("#createfile")) {
     return;
   }
 
   const updateVscodeBtn = document.createElement("button");
   updateVscodeBtn.textContent = "Create File";
-  updateVscodeBtn.id = "update-vscode-btn";
+  updateVscodeBtn.id = "createfile";
   updateVscodeBtn.style.padding = "2px 10px";
   updateVscodeBtn.style.border = "none";
   updateVscodeBtn.style.borderRadius = "20px";
@@ -249,7 +239,7 @@ const addUpdateVscodeBtn = (codeContainer) => {
         case "python":
           extension = ".py";
           break;
-        case "Java":
+        case "java":
           extension = ".java";
           break;
         case "C#":
@@ -269,6 +259,12 @@ const addUpdateVscodeBtn = (codeContainer) => {
           break;
         case "SQL":
           extension = ".sql";
+        case "C":
+          extension = ".c";
+        case "shell":
+          extension = ".sh";
+        case "Rust":
+          extension = ".rs";
           break;
         // Add more cases for other languages as needed
       }
@@ -315,11 +311,19 @@ const observer = new MutationObserver((mutationsList) => {
 
 observer.observe(document.body, { childList: true, subtree: true });
 
-// Check for button addition every 3 seconds
+// Check every 3 seconds
 setInterval(() => {
   document
     .querySelectorAll(
       ".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md"
     )
     .forEach(addUpdateVscodeBtn);
+
+  const target = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
+  const parentElements = document.querySelector(".relative.flex.h-full.flex-1.items-stretch.md\\:flex-col");
+  const saveConversation = parentElements.querySelector('#pdfButton');
+  if (!saveConversation) {
+    createButton(target);
+  }
+
 }, 3000);
