@@ -12,25 +12,25 @@ async function createButton(targetElement) {
   // Create the three buttons
   const pdfButton = document.createElement('button');
   pdfButton.id = 'pdfButton';
-  pdfButton.textContent = 'PDF';
+  pdfButton.textContent = 'pdf';
   pdfButton.style.color = 'blue';
   pdfButton.addEventListener('click', saveQAndAAsPDF);
 
   const markdownButton = document.createElement('button');
   markdownButton.id = 'markdownButton';
-  markdownButton.textContent = 'Markdown';
+  markdownButton.textContent = 'markdown';
   markdownButton.style.color = 'blue';
   markdownButton.addEventListener('click', saveQAndAAsMarkdown);
 
   const textButton = document.createElement('button');
   textButton.id = 'textButton';
-  textButton.textContent = 'Text';
+  textButton.textContent = 'text';
   textButton.style.color = 'blue';
   textButton.addEventListener('click', saveQAndAAsText);
 
   const uploadButton = document.createElement('button');
   uploadButton.id = 'uploadButton';
-  uploadButton.textContent = 'Upload';
+  uploadButton.textContent = 'upload';
   uploadButton.style.color = 'blue';
   uploadButton.addEventListener('click', uploadFile);
 
@@ -58,11 +58,11 @@ getCurrentConversationName();
 async function saveQAndAAsPDF() {
   // Create a new jsPDF instance
   const doc = new window.jspdf.jsPDF();
-  const fontPath = './fonts/simhei.ttf';
+  const fontPath = './fonts/simsunb.ttf';
   // Register the font with jsPDF
   doc.addFileToVFS(fontPath, font);
-  doc.addFont(fontPath, 'simhei', 'normal');
-  doc.setFont('simhei');
+  doc.addFont(fontPath, 'simsunb', 'normal');
+  doc.setFont('simsunb');
 
   const questionElements = document.querySelectorAll('.group.w-full.text-gray-800.dark\\:text-gray-100.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
   const answerElements = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
@@ -77,7 +77,6 @@ async function saveQAndAAsPDF() {
     const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
     const questionsLines = doc.splitTextToSize(questionWithoutPageNumber, 185);
     doc.text(10, y, `Q${i + 1}: ${questionsLines[0]}`);
-    console.log(`${questionsLines[0]}`);
     y += 6;
     for (let j = 1; j < questionsLines.length; j++) {
       if (y + 10 > doc.internal.pageSize.getHeight()) {
@@ -126,7 +125,7 @@ async function saveQAndAAsMarkdown() {
 
   const link = document.createElement('a');
   link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(markdownContent)}`;
-  link.download = fileName;
+  link.download = fileName + '.md';
   link.style.display = 'none';
   document.body.appendChild(link);
   link.click();
@@ -208,89 +207,63 @@ async function submitConversation(text, part, filename) {
 }
 
 
-const addUpdateVscodeBtn = (codeContainer) => {
+const addCreateFileButton = (codeContainer) => {
   // Check if the update button already exists in the container
   if (codeContainer.querySelector("#createfile")) {
     return;
   }
 
-  const updateVscodeBtn = document.createElement("button");
-  updateVscodeBtn.textContent = "Create File";
-  updateVscodeBtn.id = "createfile";
-  updateVscodeBtn.style.padding = "2px 10px";
-  updateVscodeBtn.style.border = "none";
-  updateVscodeBtn.style.borderRadius = "20px";
-  updateVscodeBtn.style.color = "#fff";
-  updateVscodeBtn.style.backgroundColor = "#28a745";
-  updateVscodeBtn.style.fontWeight = "300";
-  updateVscodeBtn.addEventListener("click", async () => {
-    const codeBtn = codeContainer.querySelector(".flex.ml-auto.gap-2");
-    if (codeBtn) {
-      codeBtn.click();
+  const createFileButton = document.createElement("button");
+  createFileButton.textContent = "Create";
+  createFileButton.id = "createfile";
+  createFileButton.style.padding = "2px 10px";
+  createFileButton.style.border = "none";
+  createFileButton.style.borderRadius = "20px";
+  createFileButton.style.color = "#fff";
+  createFileButton.style.backgroundColor = "#28a745";
+  createFileButton.style.fontWeight = "300";
+  createFileButton.addEventListener("click", async () => {
+    const codeType = codeContainer.querySelector('.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span');
+    let typeLists = '{ "codes" : [' +
+        '{"lang": "java", "suffix": ".java"},' + 
+        '{"lang": "javascript", "suffix": ".js"},' +
+        '{"lang": "css", "suffix": ".css"},' +
+        '{"lang": "python", "suffix": ".py"},' +
+        '{"lang": "cpp", "suffix": ".cpp"},' +
+        '{"lang": "c", "suffix": ".c"},' +
+        '{"lang": "go", "suffix": ".go"},' +
+        '{"lang": "html", "suffix": ".html"},' +
+        '{"lang": "rust", "suffix": ".rs"},' +
+        '{"lang": "php", "suffix": ".php"},' +
+        '{"lang": "shell", "suffix": ".sh"},' +
+        '{"lang": "c#", "suffix": ".cs"}]}';
 
-      const langSpan = codeContainer.querySelector(
-        ".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md > span"
-      );
-      const lang = langSpan ? langSpan.textContent.trim() : "";
-      let extension = ".txt";
-      switch (lang.toLowerCase()) {
-        case "javascript":
-          extension = ".js";
+    types = JSON.parse(typeLists);
+    let type = '.txt';
+    if (codeType) {
+      for (let i = 0; i < types.codes.length; i++) {
+        if (codeType.textContent.trim() === types.codes[i].lang) {
+          type = types.codes[i].suffix;
           break;
-        case "html":
-          extension = ".html";
-          break;
-        case "css":
-          extension = ".css";
-          break;
-        case "python":
-          extension = ".py";
-          break;
-        case "java":
-          extension = ".java";
-          break;
-        case "C#":
-          extension = ".cs";
-          break;
-        case "C++":
-          extension = ".cpp";
-          break;
-        case "Ruby":
-          extension = ".rb";
-          break;
-        case "Go":
-          extension = ".go";
-          break;
-        case "Swift":
-          extension = ".swift";
-          break;
-        case "SQL":
-          extension = ".sql";
-        case "C":
-          extension = ".c";
-        case "shell":
-          extension = ".sh";
-        case "Rust":
-          extension = ".rs";
-          break;
-        // Add more cases for other languages as needed
+        }
       }
-      const filename = `New${extension}`;
-      const fileContent = await navigator.clipboard.readText();
-
-      const blob = new Blob([fileContent], { type: "text/plain" });
-      const downloadLink = document.createElement("a");
-      downloadLink.href = URL.createObjectURL(blob);
-      downloadLink.download = filename;
-      downloadLink.click();
-    } else {
-      console.log("Copy code button not found.");
     }
+    
+    const filename = `new${type}`;
+
+    const parentDiv = codeContainer.parentElement;
+    const codeContent = parentDiv.querySelector('.p-4.overflow-y-auto code').textContent;
+
+    const blob = new Blob([codeContent], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
   });
 
-  updateVscodeBtn.style.marginRight = "200px";
+  createFileButton.style.marginRight = "200px";
 
-  codeContainer.insertAdjacentElement("afterbegin", updateVscodeBtn);
+  codeContainer.insertAdjacentElement("afterbegin", createFileButton);
 };
 
 // Find and add update button to existing code containers
@@ -298,7 +271,7 @@ document
   .querySelectorAll(
     ".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md"
   )
-  .forEach(addUpdateVscodeBtn);
+  .forEach(addCreateFileButton);
 
 // Use a MutationObserver to listen for new code containers added to the page
 const observer = new MutationObserver((mutationsList) => {
@@ -310,7 +283,7 @@ const observer = new MutationObserver((mutationsList) => {
           ".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md"
         )
       ) {
-        addUpdateVscodeBtn(node);
+        addCreateFileButton(node);
       }
     });
   });
@@ -324,7 +297,7 @@ setInterval(() => {
     .querySelectorAll(
       ".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md"
     )
-    .forEach(addUpdateVscodeBtn);
+    .forEach(addCreateFileButton);
 
   const target = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
   const parentElements = document.querySelector(".relative.flex.h-full.flex-1.items-stretch.md\\:flex-col");
@@ -333,5 +306,4 @@ setInterval(() => {
     getCurrentConversationName();
     createButton(target);
   }
-
 }, 3000);
