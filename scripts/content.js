@@ -53,7 +53,7 @@ function getCurrentConversationName() {
     fileName = currentConversationName.textContent;
   }
 }
-getCurrentConversationName();
+// getCurrentConversationName();
 
 async function saveQAndAAsPDF() {
   // Create a new jsPDF instance
