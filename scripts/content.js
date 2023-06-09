@@ -159,38 +159,37 @@ async function saveQAndAAsText() {
 
 async function uploadFile() {
   const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.txt, .js, .py, .html, .css, .json, .csv';
+  input.type = 'file';
+  input.accept = '.txt, .js, .py, .html, .css, .json, .csv';
 
-    input.addEventListener('change', async (event) => {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      const chunkSize = 15000;
-      let offset = 0;
-      let part = 1;
+  input.addEventListener('change', async (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    const chunkSize = 15000;
+    let offset = 0;
+    let part = 1;
 
-      while (offset < file.size) {
-        const chunk = file.slice(offset, offset + chunkSize);
-        const text = await new Promise((resolve) => {
-          reader.onload = (e) => resolve(e.target.result);
-          reader.readAsText(chunk);
-        });
+    while (offset < file.size) {
+      const chunk = file.slice(offset, offset + chunkSize);
+      const text = await new Promise((resolve) => {
+        reader.onload = (e) => resolve(e.target.result);
+        reader.readAsText(chunk);
+      });
 
-        await submitConversation(text, part, file.name);
+      await submitConversation(text, part, file.name);
 
-        const numChunks = Math.ceil(file.size / chunkSize);
+      const numChunks = Math.ceil(file.size / chunkSize);
 
-        let chatgptReady = false;
-        while (!chatgptReady) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          chatgptReady = !document.querySelector('.text-2xl > span:not(.invisible)');
-        }
-
-        offset += chunkSize;
-        part++;
+      let chatgptReady = false;
+      while (!chatgptReady) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        chatgptReady = !document.querySelector('.text-2xl > span:not(.invisible)');
       }
 
-    });
+      offset += chunkSize;
+      part++;
+    }
+  });
 
     input.click();
 }
