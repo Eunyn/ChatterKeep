@@ -74,7 +74,7 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
   
 - Prompt prompts:
 
-  ![image-20230612134106064](E:\Project\chatgpt\image\prompts)
+  ![image-20230612134106064](https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png)
 
 ## Contributing
 
