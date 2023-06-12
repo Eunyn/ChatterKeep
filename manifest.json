@@ -15,7 +15,13 @@
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],
-      "js": ["./scripts/simhei-normal.js", "./scripts/jspdf.umd.min.js", "./scripts/content.js"],
+      "js": [
+        "./scripts/chatgpt_prompts.js",
+        "./scripts/prompts.js", 
+        "./scripts/simhei-normal.js", 
+        "./scripts/jspdf.umd.min.js", 
+        "./scripts/content.js"
+      ],
       "run_at": "document_end"
     }
   ],
