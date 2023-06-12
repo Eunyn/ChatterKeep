@@ -125,6 +125,10 @@ function initPrompt() {
 
     // let selectedIndex = -1;
     function keyDown(event) {
+      if (!promptTextarea.value.startsWith('/')) {
+        return;
+      }
+
       let promptsElement = document.querySelector('#suggestionBox');
       if (promptsElement) {
         const suggestionItems = Array.from(promptsElement.getElementsByClassName('suggestion-item'));
@@ -171,6 +175,7 @@ function initPrompt() {
       }
     }
 
+    
     promptTextarea.removeEventListener('keydown', keyDown, {capture: true});
     promptTextarea.addEventListener('keydown', keyDown, {capture: true});
   }
