@@ -1,7 +1,7 @@
 
 # ChatterKeep — ChatGPT 扩展
 
-ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话、保存生成的代码、上传大型文件以及各种`Prompts`。<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
+ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话内容、保存生成的代码、上传大文件以及各种`Prompts`。<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
 
 ## 功能
 
@@ -41,11 +41,12 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
    - 单击文本输入窗口上方的`Upload`按钮。
    - 从本地计算机中选择要上传的文件。
    - 文件将被解析，其内容将填充到 ChatGPT 输入框中。
-3. 提示提示：
-   - 从输入特定提示开始，例如 `'/linux'`，这表明您希望 ChatGPT 充当的角色。
+3. `Prompt`提示：
+   - 从输入特定提示开始，例如 `'/linux'`，这表明您希望 ChatGPT 充当的角色或要执行的任务。
    - 您可以使用键盘上的上箭头和下箭头键浏览提示列表。
-   - 按下确认键（通常为 `Ente`r 键）选择并将该提示直接发送给 ChatGPT 进行处理。
-   - 也可以使用鼠标光标单击列表中的任何`prompt`。然后，完整的`prompt`将插入到输入框中。
+   - 按下确认键（通常为 `Ente`r 键）选择并将该提示直接发送给 ChatGPT。
+   - 也可以使用鼠标单击列表中的任何`prompt`。然后，完整的`prompt`将插入到输入框中。
+   - 支持自定义添加和删除`Prompt`。
 
 ## 展示
 
