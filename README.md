@@ -4,7 +4,7 @@ ChatterKeep is a powerful extension for ChatGPT that enhances your experience an
 
 
 
-[中文](E:\\Project\\chatgpt\\fonts\\README.md)
+[中文](https://github.com/Eunyn/ChatterKeep/blob/main/fonts/README.md)
 
 ## Features
 
