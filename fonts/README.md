@@ -1,7 +1,7 @@
 
 # ChatterKeep — ChatGPT 扩展
 
-ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话、保存生成的代码、上传大型文件以及各种`Prompts`。<img src="E:\Project\chatgpt\image\main.png" alt="main" style="zoom:30%;" />
+ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话、保存生成的代码、上传大型文件以及各种`Prompts`。<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
 
 ## 功能
 
@@ -53,27 +53,27 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
 
   - 导出为 `PDF `格式
 
-    <img src="E:\Project\chatgpt\image\pdf.png" alt="pdf" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/pdf.png" alt="pdf" style="zoom:30%;" />
 
   - 导出为 `Markdown `格式
 
-    <img src="E:\Project\chatgpt\image\markdown.png" alt="markdown" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/markdown.png" alt="markdown" style="zoom:30%;" />
 
   - 导出为`Text`格式
 
-    <img src="E:\Project\chatgpt\image\text.png" alt="text" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/text.png" alt="text" style="zoom:30%;" />
 
   - 导出代码
 
-    <img src="E:\Project\chatgpt\image\code.png" alt="code" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/code.png" alt="code" style="zoom:30%;" />
 
 - 上传文件：
 
-  <img src="E:\Project\chatgpt\image\upload.png" alt="upload" style="zoom:30%;" />
+  <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/upload.png" alt="upload" style="zoom:30%;" />
 
 - `Prompt`：
 
-  <img src="E:\Project\chatgpt\image\prompts.png" alt="prompts" style="zoom:30%;" />
+  <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
 
 ## 贡献
 
