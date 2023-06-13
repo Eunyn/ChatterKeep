@@ -2,6 +2,10 @@
 
 ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.<img src="E:\Project\chatgpt\image\main.png" alt="main" style="zoom:30%;" />
 
+
+
+[中文](E:\\Project\\chatgpt\\fonts\\README.md)
+
 ## Features
 
 - Export conversations with ChatGPT in PDF, Markdown, and Text formats.

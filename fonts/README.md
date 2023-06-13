@@ -1,0 +1,84 @@
+
+# ChatterKeep — ChatGPT 扩展
+
+ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话、保存生成的代码、上传大型文件以及各种`Prompts`。<img src="E:\Project\chatgpt\image\main.png" alt="main" style="zoom:30%;" />
+
+## 功能
+
+- 以 `PDF`、`Markdown` 和`Text`格式导出与 ChatGPT 的对话。
+- 将文件上传到 ChatGPT 输入框中，以便轻松填充内容。支持以下文件格式：`.txt`、`.js`、`.py`、`.html`、`.css`、`.json`、`.csv`。
+- 允许您创建 ChatGPT 生成的代码文件。
+- 提供一组预定义的`Prompt`提示，以增强与 ChatGPT 的交互。
+
+## 安装
+
+要使用 ChatGPT 文件插件，请按照以下步骤进行操作：
+
+1. 将存储库克隆到本地计算机，或直接点击下载：
+
+   ```
+   git clone git@github.com:Eunyn/ChatterKeep.git
+   ```
+
+2. 打开您的浏览器的扩展管理页面。
+
+3. 启用开发者模式。
+
+4. 点击“加载已解压”并选择克隆的存储库文件夹。
+
+## 使用方法
+
+安装了 ChatGPT 文件插件后，您可以在 ChatGPT 接口中使用它。以下是如何使用的方法：
+
+1. 导出对话：
+   - 在浏览器中打开 ChatGPT 接口。
+   - 启动与 ChatGPT 的对话。
+   - 在插件窗口上方，将看到四个按钮：PDF、Markdown、Text 和 Upload。
+   - 单击所需格式的按钮（PDF、Markdown 或 Text）以将对话以相应的格式保存到本地计算机。
+   - 文件将下载到默认的下载位置。
+2. 上传文件：
+   - 要将文件上传到 ChatGPT 输入框中，请确保文件属于支持的格式之一：`.txt`、`.js`、`.py`、`.html`、`.css`、`.json`、`.csv`。
+   - 单击文本输入窗口上方的`Upload`按钮。
+   - 从本地计算机中选择要上传的文件。
+   - 文件将被解析，其内容将填充到 ChatGPT 输入框中。
+3. 提示提示：
+   - 从输入特定提示开始，例如 `'/linux'`，这表明您希望 ChatGPT 充当的角色。
+   - 您可以使用键盘上的上箭头和下箭头键浏览提示列表。
+   - 按下确认键（通常为 `Ente`r 键）选择并将该提示直接发送给 ChatGPT 进行处理。
+   - 也可以使用鼠标光标单击列表中的任何`prompt`。然后，完整的`prompt`将插入到输入框中。
+
+## 展示
+
+- 导出对话：
+
+  - 导出为 `PDF `格式
+
+    <img src="E:\Project\chatgpt\image\pdf.png" alt="pdf" style="zoom:30%;" />
+
+  - 导出为 `Markdown `格式
+
+    <img src="E:\Project\chatgpt\image\markdown.png" alt="markdown" style="zoom:30%;" />
+
+  - 导出为`Text`格式
+
+    <img src="E:\Project\chatgpt\image\text.png" alt="text" style="zoom:30%;" />
+
+  - 导出代码
+
+    <img src="E:\Project\chatgpt\image\code.png" alt="code" style="zoom:30%;" />
+
+- 上传文件：
+
+  <img src="E:\Project\chatgpt\image\upload.png" alt="upload" style="zoom:30%;" />
+
+- `Prompt`：
+
+  <img src="E:\Project\chatgpt\image\prompts.png" alt="prompts" style="zoom:30%;" />
+
+## 贡献
+
+欢迎为 ChatterKeep 插件做出贡献！如果您发现任何问题或有改进建议，请随时打开问题或提交拉取请求。特别欢迎能够增强插件功能或可用性的贡献。
+
+## 许可证
+
+该项目基于 [MIT 许可证](https://chat.openai.com/c/LICENSE) 授权。
