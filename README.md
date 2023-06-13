@@ -16,7 +16,7 @@ ChatterKeep is a powerful extension for ChatGPT that enhances your experience an
 
 ## Installation
 
-To use the ChatGPT File Plugin, follow these steps:
+To use the ChatterKeep File Plugin, follow these steps:
 
 1. Clone the repository to your local machine:
 
