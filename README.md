@@ -1,8 +1,6 @@
 # ChatterKeep — ChatGPT Extension
 
-ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.
-
-![image-20230605153937932](https://github.com/Eunyn/chatgpt/blob/main/image/main.png)
+ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.<img src="E:\Project\chatgpt\image\main.png" alt="main" style="zoom:30%;" />
 
 ## Features
 
@@ -34,7 +32,7 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 1. Exporting Conversations:
    - Open the ChatGPT interface in your browser.
    - Start a conversation with ChatGPT.
-   - Above the text input window, you will see four buttons: PDF, Markdown, Text, and Upload.
+   - Above the plugin window, you will see four buttons: PDF, Markdown, Text, and Upload.
    - Click on the desired format button (PDF, Markdown, or Text) to save the conversation in the corresponding format to your local computer.
    - The file will be downloaded to your default download location.
 2. Uploading Files:
@@ -48,33 +46,33 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
    - Once you've highlighted the desired prompt, press the confirmation key (usually Enter or Return) to select and send that prompt directly to ChatGPT for processing.
    - Alternatively, you can click on any prompt in the list with your mouse cursor. The complete prompt will then be inserted into the input box.
 
-# Show
+## Show
 
 - Exporting Conversations:
 
   - Export in PDF format
 
-    ![image-20230605205647726](https://github.com/Eunyn/chatgpt/blob/main/image/pdf.png)
+    <img src="E:\Project\chatgpt\image\pdf.png" alt="pdf" style="zoom:30%;" />
 
   - Export in markdown format
 
-    ![image-20230605171325716](https://github.com/Eunyn/chatgpt/blob/main/image/markdown.png)
+    <img src="E:\Project\chatgpt\image\markdown.png" alt="markdown" style="zoom:30%;" />
 
   - Export in text format
 
-    ![image-20230605171448707](https://github.com/Eunyn/chatgpt/blob/main/image/text.png)
-    
+    <img src="E:\Project\chatgpt\image\text.png" alt="text" style="zoom:30%;" />
+
   - Export code
 
-    ![image-20230608173907546](https://github.com/Eunyn/ChatterKeep/blob/main/image/code.png)
+    <img src="E:\Project\chatgpt\image\code.png" alt="code" style="zoom:30%;" />
 
 - Uploading Files:
 
-  ![image-20230608174129414](https://github.com/Eunyn/ChatterKeep/blob/main/image/upload.png)
+  <img src="E:\Project\chatgpt\image\upload.png" alt="upload" style="zoom:30%;" />
   
 - Prompt prompts:
 
-  ![image-20230612134106064](https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png)
+  <img src="E:\Project\chatgpt\image\prompts.png" alt="prompts" style="zoom:30%;" />
 
 ## Contributing
 
