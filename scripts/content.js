@@ -64,7 +64,7 @@ function initExecute() {
     if (!prompts) {
       var data = JSON.stringify(jsonData);
       localStorage.setItem('promptDatas', data);
-      prompts = localStorage.getItem('promptDatas');
+      prompts = data;
     } 
 
     prompts = JSON.parse(prompts);

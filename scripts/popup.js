@@ -23,22 +23,14 @@ function init() {
             prompt: promptInput.value
           };
 
+          cmdInput.value = '';
+          promptInput.value = '';
 
           // Send the message to the injected page
           sendMessageToContentScript(message);
         });
 
       });
-
-      const cmdInput = document.getElementById('floatingText');
-      const promptInput = document.getElementById('floatingTextarea2');
-
-      if (cmdInput) {
-        cmdInput.value = '';
-      }
-      if (promptInput) {
-        promptInput.value = '';
-      }
     }
   }
 
