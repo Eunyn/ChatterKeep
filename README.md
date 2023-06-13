@@ -1,6 +1,6 @@
 # ChatterKeep — ChatGPT Extension
 
-ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.<img src="E:\Project\chatgpt\image\main.png" alt="main" style="zoom:30%;" />
+ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
 
 ## Features
 
@@ -52,27 +52,27 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 
   - Export in PDF format
 
-    <img src="E:\Project\chatgpt\image\pdf.png" alt="pdf" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/pdf.png" alt="pdf" style="zoom:30%;" />
 
   - Export in markdown format
 
-    <img src="E:\Project\chatgpt\image\markdown.png" alt="markdown" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/markdown.png" alt="markdown" style="zoom:30%;" />
 
   - Export in text format
 
-    <img src="E:\Project\chatgpt\image\text.png" alt="text" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/text.png" alt="text" style="zoom:30%;" />
 
   - Export code
 
-    <img src="E:\Project\chatgpt\image\code.png" alt="code" style="zoom:30%;" />
+    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/code.png" alt="code" style="zoom:30%;" />
 
 - Uploading Files:
 
-  <img src="E:\Project\chatgpt\image\upload.png" alt="upload" style="zoom:30%;" />
+  <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/upload.png" alt="upload" style="zoom:30%;" />
   
 - Prompt prompts:
 
-  <img src="E:\Project\chatgpt\image\prompts.png" alt="prompts" style="zoom:30%;" />
+  <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
 
 ## Contributing
 
