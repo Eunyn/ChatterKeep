@@ -1,6 +1,7 @@
 # ChatterKeep — ChatGPT Extension
 
-ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. This README guide will walk you through the features and explain how to make the most of ChatterKeep.<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
+ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. 
+<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
 
 
 
@@ -8,7 +9,7 @@ ChatterKeep is a powerful extension for ChatGPT that enhances your experience an
 
 ## Features
 
-- Export conversations with ChatGPT in PDF, Markdown, and Text formats.
+- Export conversations with ChatGPT in `PDF`, `Markdown`, and `Text` formats.
 - Upload files into the ChatGPT input box for easy population of content. Supports the following file formats: `.txt`, `.js`, `.py`, `.html`, `.css`, `.json`, `.csv`.
 - Allowing you to create a code file that ChatGPT generates.
 -  Provides a set of predefined command prompts to enhance your interaction with ChatGPT.
@@ -36,33 +37,33 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 1. Exporting Conversations:
    - Open the ChatGPT interface in your browser.
    - Start a conversation with ChatGPT.
-   - Above the plugin window, you will see four buttons: PDF, Markdown, Text, and Upload.
-   - Click on the desired format button (PDF, Markdown, or Text) to save the conversation in the corresponding format to your local computer.
+   - Above the plugin window, you will see four buttons: `PDF`, `Markdown`, `Text`, and `Upload`.
+   - Click on the desired format button (`PDF`, `Markdown`, or `Text`) to save the conversation in the corresponding format to your local computer.
    - The file will be downloaded to your default download location.
 2. Uploading Files:
    - To upload a file into the ChatGPT input box, make sure the file is in one of the supported formats: `.txt`, `.js`, `.py`, `.html`, `.css`, `.json`, `.csv`.
-   - Click on the "Upload" button above the text input window.
+   - Click on the `Upload` button above the text input window.
    - Select the file you want to upload from your local computer.
    - The file will be parsed and its content will be populated into the ChatGPT input box.
 3. Prompt prompts:
-   - Start by entering a specific prompt, such as '/linux', which  indicates the type of response you want from ChatGPT.
+   - Start by entering a specific prompt, such as `'/linux'`, which  indicates the type of response you want from ChatGPT.
    - You can navigate through the prompt list using the up and down arrow keys on your keyboard. Move up or down to highlight the desired prompt.
-   - Once you've highlighted the desired prompt, press the confirmation key (usually Enter or Return) to select and send that prompt directly to ChatGPT for processing.
-   - Alternatively, you can click on any prompt in the list with your mouse cursor. The complete prompt will then be inserted into the input box.
-
+   - Press the confirmation key (usually Enter) to select and send that prompt directly to ChatGPT for processing.
+   - Alternatively, you can click on any prompt in the list with your mouse. The complete prompt will then be inserted into the input box.
+   - Supports custom addition and deletion of prompts.
 ## Show
 
 - Exporting Conversations:
 
-  - Export in PDF format
+  - Export in `PDF` format
 
     <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/pdf.png" alt="pdf" style="zoom:30%;" />
 
-  - Export in markdown format
+  - Export in `Markdown` format
 
     <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/markdown.png" alt="markdown" style="zoom:30%;" />
 
-  - Export in text format
+  - Export in `Text` format
 
     <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/text.png" alt="text" style="zoom:30%;" />
 
@@ -74,7 +75,7 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 
   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/upload.png" alt="upload" style="zoom:30%;" />
   
-- Prompt prompts:
+- `Prompt` prompts:
 
   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
 
