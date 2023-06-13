@@ -1,8 +1,4 @@
 // implements the prompts hints when input something.
-const tooltipElements = document.querySelectorAll('[data-toggle="tooltip"]');
-tooltipElements.forEach(element => {
-  new bootstrap.Tooltip(element);
-});
 
 function initPrompt() {
   if (window.formInterval) {
@@ -17,22 +13,13 @@ function initPrompt() {
 
     clearInterval(window.formInterval);
     promptsPrompt();
-    
 
     new MutationObserver((mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.target.getAttribute('id') === 'prompt-textarea') {
-          initDom();
+          initPromptDOM();
           selectedIndex = -1;
           promptsPrompt();
-          // console.log('suggestion-item');
-        } 
-
-        if (mutation.target.getAttribute('id') === 'suggestionBox') {
-          const searchPrompt = document.querySelector('form .suggestionBox>div');
-          const searchInput = document.querySelector('form textarea');
-          if (!searchPrompt)
-            return;
         } 
       }
     }).observe(document.body, {
@@ -44,7 +31,7 @@ function initPrompt() {
 
 
   async function promptsPrompt() {
-    initDom();
+    initPromptDOM();
     const promptTextarea = document.getElementById('prompt-textarea');
     const targetElement = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
     let promptsElement = document.querySelector('#suggestionBox');
@@ -54,7 +41,7 @@ function initPrompt() {
       promptsElement.style.top = '100%';
       promptsElement.style.left = '0';
       promptsElement.style.width = '300px';
-      promptsElement.style.backgroundColor = 'black';
+      promptsElement.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
       promptsElement.style.color = 'white';
       promptsElement.style.fontFamily = 'Microsoft YaBlack';
       promptsElement.style.border = '1px solid #ccc';
@@ -66,6 +53,7 @@ function initPrompt() {
       if (targetElement) {
         // targetElement.appendChild(promptsElement);
         targetElement.parentNode.insertBefore(promptsElement, targetElement);
+        // codeContainer.insertAdjacentElement("afterbegin", createFileButton);
       }
 
       promptsElement = document.querySelector('#suggestionBox');
@@ -75,9 +63,18 @@ function initPrompt() {
     function promptsShow() {
       let promptsElement = document.querySelector('#suggestionBox');
       if (promptsElement) {
-        const shortlistItems = jsonData.map(item => item.cmd);
+        var promptLists = localStorage.getItem('promptDatas');
+        if (!promptLists) {
+          promptLists = jsonData;
+        } else {
+          promptLists = JSON.parse(promptLists);
+        }
+
+        const shortlistItems = promptLists.map(item => item.cmd);
         const input = promptTextarea.value.toLowerCase();
         const matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
+
+
         if (input && matchingItems.length > 0) {
           promptsElement.innerHTML = '';
           matchingItems.forEach(item => {
@@ -87,15 +84,15 @@ function initPrompt() {
             suggestionItem.style.cursor = 'pointer';
             suggestionItem.style.padding = '4px';
 
-            suggestionItem.setAttribute('data-bs-toggle', 'tooltip');
-            const selected = jsonData.find(items => items.cmd === item);
+            const selected = promptLists.find(items => items.cmd === item);
+
             suggestionItem.setAttribute('title', selected.prompt);
 
             suggestionItem.addEventListener('click', () => {
               promptTextarea.value = item;
 
               const input = promptTextarea.value.toLowerCase();
-              const selectedItem = jsonData.find(item => item.cmd === input);
+              const selectedItem = promptLists.find(item => item.cmd === input);
               if (selectedItem) {
                 promptTextarea.value = selectedItem.prompt;
                 promptsElement.style.display = 'none';
@@ -106,7 +103,6 @@ function initPrompt() {
             promptsElement.appendChild(suggestionItem);
           });
 
-          // updateSuggestionBoxPosition(promptTextarea);
           const inputRect = promptTextarea.getBoundingClientRect();
           promptsElement.style.top = `${inputRect.bottom}px`;
           promptsElement.style.display = 'block';
@@ -153,7 +149,14 @@ function initPrompt() {
 
         if (event.key === 'Enter') {
           const input = promptTextarea.value.toLowerCase();
-          const selectedItem = jsonData.find(item => item.cmd === input);
+          var promptLists = localStorage.getItem('promptDatas');
+          if (!promptLists) {
+            promptLists = jsonData;
+          } else {
+            promptLists = JSON.parse(promptLists);
+          }
+
+          const selectedItem = promptLists.find(item => item.cmd === input);
           if (selectedItem) {
             promptTextarea.value = selectedItem.prompt;
             promptsElement.style.display = 'none';
@@ -181,7 +184,7 @@ function initPrompt() {
   }
 
 
-  function initDom() {
+  function initPromptDOM() {
     const promptDom = document.querySelector('.suggestionBox');
     if (promptDom) {
       promptDom.innerHTML = '';

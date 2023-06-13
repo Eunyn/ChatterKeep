@@ -16,7 +16,8 @@
     {
       "matches": ["https://chat.openai.com/*"],
       "js": [
-        "./scripts/chatgpt_prompts.js",
+        "./scripts/popup.js",
+        "./scripts/promptDatas.js",
         "./scripts/prompts.js", 
         "./scripts/simhei-normal.js", 
         "./scripts/jspdf.umd.min.js", 
@@ -27,5 +28,8 @@
   ],
   "icons": {
     "48": "./image/icon.png"
+  },
+  "action": {
+    "default_popup": "popup.html"
   }
 }
