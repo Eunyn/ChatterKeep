@@ -12,7 +12,7 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
 
 ## 安装
 
-要使用 ChatGPT 文件插件，请按照以下步骤进行操作：
+要使用 ChatterKeep 插件，请按照以下步骤进行操作：
 
 1. 将存储库克隆到本地计算机，或直接点击下载：
 
