@@ -85,7 +85,7 @@ Contributions to the ChatterKeep Plugin are welcome! If you find any issues or h
 
 ## Thanks
 
-Many thanks to [Awesome ChatGPT Prompts]([f/awesome-chatgpt-prompts: This repo includes ChatGPT prompt curation to use ChatGPT better. (github.com)](https://github.com/f/awesome-chatgpt-prompts)). The default prompts provided by this plugin all come from him.
+Many thanks to [Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts). The default prompts provided by this plugin all come from him.
 
 ## License
 
