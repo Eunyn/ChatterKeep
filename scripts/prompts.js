@@ -27,7 +27,7 @@ function initPrompt() {
       subtree: true,
     });
 
-  }, 200);
+  }, 300);
 
 
   async function promptsPrompt() {
@@ -170,9 +170,10 @@ function initPrompt() {
         selectedIndex = -1;
 
         const divToDelete = document.querySelectorAll('.suggestion-item');
-        divToDelete.textContent = '';
-        divToDelete.innerHTML = '';
+        // divToDelete.textContent = '';
+        // divToDelete.innerHTML = '';
         divToDelete.forEach(div => {
+          div.textContent = '';
           div.remove();
         });
       }
