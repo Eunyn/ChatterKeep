@@ -83,6 +83,10 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 
 Contributions to the ChatterKeep Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
 
+## Thanks
+
+Many thanks to [Awesome ChatGPT Prompts]([f/awesome-chatgpt-prompts: This repo includes ChatGPT prompt curation to use ChatGPT better. (github.com)](https://github.com/f/awesome-chatgpt-prompts)). The default prompts provided by this plugin all come from him.
+
 ## License
 
 This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).

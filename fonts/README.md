@@ -80,6 +80,10 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
 
 欢迎为 ChatterKeep 插件做出贡献！如果您发现任何问题或有改进建议，请随时打开问题或提交拉取请求。特别欢迎能够增强插件功能或可用性的贡献。
 
+## 感谢
+
+非常感谢[Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts) 。此插件提供的默认提示都来自于他。
+
 ## 许可证
 
 该项目基于 [MIT 许可证](https://chat.openai.com/c/LICENSE) 授权。
