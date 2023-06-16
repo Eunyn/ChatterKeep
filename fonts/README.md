@@ -1,7 +1,7 @@
 
 # ChatterKeep — ChatGPT 扩展
 
-ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话内容、保存生成的代码、上传大文件以及各种`Prompts`。<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
+ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以方便地下载对话内容、保存生成的代码、上传大文件以及各种`Prompts`。[<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />](https://youtu.be/RrRpUIcM86s)
 
 ## 功能
 

@@ -1,7 +1,7 @@
 # ChatterKeep — ChatGPT Extension
 
 ChatterKeep is a powerful extension for ChatGPT that enhances your experience and productivity by providing additional functionalities. With ChatterKeep, you can conveniently download conversations, save generated code, upload large files, and access a variety of prompts. 
-<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />
+[<img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/main.png" alt="main" style="zoom:30%;" />](https://youtu.be/RrRpUIcM86s)
 
 
 
