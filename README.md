@@ -96,7 +96,6 @@ Contributions to the ChatterKeep Plugin are welcome! If you find any issues or h
 ## Thanks
 
 Many thanks to [Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts) and [PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh). The default prompts provided by this plugin all come from them.
-
 ## License
 
 This project is licensed under the [MIT License](https://chat.openai.com/c/LICENSE).
