@@ -60,15 +60,24 @@ function initExecute() {
       return;
     }
 
-    var prompts = localStorage.getItem('promptDatas');
-    if (!prompts) {
-      var data = JSON.stringify(jsonData);
-      localStorage.setItem('promptDatas', data);
-      prompts = data;
-    } 
+    var prompts = '';
+    var isContainsChinese = containsChinese(cmdInput);
+    if (isContainsChinese && cmdInput.startsWith('#')) {
+      prompts = localStorage.getItem('prompts-zh');
+      if (!prompts) {
+        prompts = JSON.stringify(jsonDataZh)
+        localStorage.setItem('prompts-zh', prompts);
+      }
+    } else {
+      prompts = localStorage.getItem('prompts-eng');
+      if (!prompts) {
+        var data = JSON.stringify(jsonData);
+        localStorage.setItem('prompts-eng', data);
+        prompts = data;
+      } 
+    }
 
     prompts = JSON.parse(prompts);
-
     var index = prompts.findIndex(function(entry) {
       return entry.cmd === cmdInput;
     });
@@ -84,7 +93,11 @@ function initExecute() {
 
     prompts.push(newEntry);
 
-    localStorage.setItem('promptDatas', JSON.stringify(prompts));
+    if (isContainsChinese && cmdInput.startsWith('#')) {
+      localStorage.setItem('prompts-zh', JSON.stringify(prompts));
+    } else {
+      localStorage.setItem('prompts-eng', JSON.stringify(prompts));
+    }
 
     // console.log(prompts);
   }
@@ -94,7 +107,15 @@ function initExecute() {
       return;
     }
 
-    var prompts = localStorage.getItem('promptDatas');
+    var isContainsChinese = containsChinese(cmdInput);
+    var prompts = '';
+
+    if (isContainsChinese && cmdInput.startsWith('#')) {
+      prompts = localStorage.getItem('prompts-zh');
+    } else {
+      prompts = localStorage.getItem('prompts-eng');
+    }
+
     if (!prompts) {
       return;
     }
@@ -111,9 +132,19 @@ function initExecute() {
       return;
     }
 
-    localStorage.setItem('promptDatas', JSON.stringify(deleteData));
+    if (isContainsChinese && cmdInput.startsWith('#')) {
+      localStorage.setItem('prompts-zh', JSON.stringify(deleteData));
+    } else {
+      localStorage.setItem('prompts-eng', JSON.stringify(deleteData));
+    }
 
     // console.log(deleteData);
+  }
+
+
+  function containsChinese(text) {
+    const chineseRegex = /[\u4e00-\u9fa5]/; // Regular expression to match Chinese characters
+    return chineseRegex.test(text);
   }
 
 
@@ -224,11 +255,11 @@ function initExecute() {
 
 
   function uploadFile() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.txt, .js, .py, .html, .css, .json, .csv';
+    const upload = document.createElement('input');
+    upload.type = 'file';
+    upload.accept = '.txt, .js, .py, .html, .css, .json, .csv, .c, .cpp, .java, .go, .rs, .php, .sql';
 
-    input.addEventListener('change', async (event) => {
+    upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
       const chunkSize = 10000;
@@ -238,39 +269,50 @@ function initExecute() {
       while (offset < file.size) {
         const chunk = file.slice(offset, offset + chunkSize);
         const text = await new Promise((resolve) => {
-          reader.onload = (e) => resolve(e.target.result);
+          reader.onload = (event) => resolve(event.target.result);
           reader.readAsText(chunk);
         });
 
         await submitConversation(text, part, file.name);
 
-        const numChunks = Math.ceil(file.size / chunkSize);
+        const submit = document.getElementById('prompt-textarea');
+        if (submit) {
+          submit.nextElementSibling.click();
+        }
 
+        // Make sure that ChatGPT has finished processing the previous request
         let chatgptReady = false;
         while (!chatgptReady) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-          chatgptReady = !document.querySelector('.text-2xl > span:not(.invisible)');
+          await new Promise((resolve) => setTimeout(resolve, 8000));
+          const submitButton = document.getElementById('prompt-textarea');
+          if (submitButton) {
+            chatgptReady = !submitButton.disabled;
+          }
         }
 
         offset += chunkSize;
         part++;
       }
+
+      const submit = document.getElementById('prompt-textarea');
+      if (submit && submit.value) {
+        submit.nextElementSibling.click();
+      }
+
     });
 
-    input.click();
+    upload.click();
   }
 
 
-
   function submitConversation(text, part, filename) {
-    const textarea = document.querySelector("textarea[tabindex='0']");
-    const enterKeyEvent = new KeyboardEvent('keydown', {
+    const textarea = document.querySelector("textarea");
+    const inputEvent = new Event('input', {
       bubbles: true,
       cancelable: true,
-      keyCode: 13,
     });
-    textarea.value = `Part ${part} of ${filename}:\n\n${text}`;
-    textarea.dispatchEvent(enterKeyEvent);
+    textarea.value = `Part ${part} of ${filename}:\n${text}`;
+    textarea.dispatchEvent(inputEvent);
   }
 
 
@@ -304,6 +346,7 @@ function initExecute() {
             '{"lang": "rust", "suffix": ".rs"},' +
             '{"lang": "php", "suffix": ".php"},' +
             '{"lang": "shell", "suffix": ".sh"},' +
+            '{"lang": "mysql", "suffix": ".sql"},' +
             '{"lang": "c#", "suffix": ".cs"}]}';
 
         types = JSON.parse(typeLists);

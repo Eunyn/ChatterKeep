@@ -36,16 +36,26 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
    - 在插件窗口上方，将看到四个按钮：PDF、Markdown、Text 和 Upload。
    - 单击所需格式的按钮（PDF、Markdown 或 Text）以将对话以相应的格式保存到本地计算机。
    - 文件将下载到默认的下载位置。
+   
 2. 上传文件：
    - 要将文件上传到 ChatGPT 输入框中，请确保文件属于支持的格式之一：`.txt`、`.js`、`.py`、`.html`、`.css`、`.json`、`.csv`。
    - 单击文本输入窗口上方的`Upload`按钮。
    - 从本地计算机中选择要上传的文件。
    - 文件将被解析，其内容将填充到 ChatGPT 输入框中。
+   
 3. `Prompt`提示：
-   - 从输入特定提示开始，例如 `'/linux'`，这表明您希望 ChatGPT 充当的角色或要执行的任务。
+   - 支持中英文`prompt`
+   
+     > 例如“`/linux`”，表示你需要英文`prompt`。
+     >
+     > 如“`#充当Linux客户端`”，表示你需要中文`prompt`。
+   
    - 您可以使用键盘上的上箭头和下箭头键浏览提示列表。
+   
    - 按下确认键（通常为 `Ente`r 键）选择并将该提示直接发送给 ChatGPT。
+   
    - 也可以使用鼠标单击列表中的任何`prompt`。然后，完整的`prompt`将插入到输入框中。
+   
    - 支持自定义添加和删除`Prompt`。
 
 ## 展示
@@ -82,7 +92,7 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
 
 ## 感谢
 
-非常感谢[Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts) 。此插件提供的默认提示都来自于他。
+非常感谢[Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts) 和 [PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh)。此插件提供的默认提示都来自于他们。
 
 ## 许可证
 

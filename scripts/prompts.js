@@ -63,16 +63,25 @@ function initPrompt() {
     function promptsShow() {
       let promptsElement = document.querySelector('#suggestionBox');
       if (promptsElement) {
-        var promptLists = localStorage.getItem('promptDatas');
-        if (!promptLists) {
-          promptLists = jsonData;
-        } else {
-          promptLists = JSON.parse(promptLists);
-        }
+        // var promptLists = localStorage.getItem('prompts-eng');
+        // if (!promptLists) {
+        //   promptLists = jsonData;
+        // } else {
+        //   promptLists = JSON.parse(promptLists);
+        // }
 
-        const shortlistItems = promptLists.map(item => item.cmd);
         const input = promptTextarea.value.toLowerCase();
-        const matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
+        const promptLists = getPromptType(input);
+        const shortlistItems = promptLists.map(item => item.cmd);
+
+        var matchingItems = '';
+        
+        if (input.startsWith('#')) {
+          matchingItems = shortlistItems.filter(item => item.startsWith(input));
+        } else {
+          matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
+        }
+        // const matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
 
 
         if (input && matchingItems.length > 0) {
@@ -113,10 +122,33 @@ function initPrompt() {
     }
 
     if (promptTextarea) {
-      promptTextarea.removeEventListener('input', promptsShow);
-      promptTextarea.addEventListener('input', promptsShow);
-    } else {
-      console.log('no promptTextarea');
+      if (promptTextarea.value.startsWith("/") || promptTextarea.value.startsWith("#")) {
+        promptTextarea.removeEventListener('input', promptsShow);
+        promptTextarea.addEventListener('input', promptsShow);
+      } else {
+        console.log('not startsWith \'\/\' && \'\#\'');
+      }
+    }
+
+    function getPromptType(input) {
+      var prompt = '';
+      if (input.startsWith('#')) {
+        prompt = localStorage.getItem('prompts-zh');
+        if (!prompt) {
+          prompt = jsonDataZh;
+        } else {
+          prompt = JSON.parse(prompt);
+        }
+      } else {
+        prompt = localStorage.getItem('prompts-eng');
+        if (!prompt) {
+          prompt = jsonData;
+        } else {
+          prompt = JSON.parse(prompt);
+        }
+      }
+
+      return prompt;
     }
 
     // let selectedIndex = -1;

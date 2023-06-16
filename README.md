@@ -40,16 +40,26 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
    - Above the plugin window, you will see four buttons: `PDF`, `Markdown`, `Text`, and `Upload`.
    - Click on the desired format button (`PDF`, `Markdown`, or `Text`) to save the conversation in the corresponding format to your local computer.
    - The file will be downloaded to your default download location.
+   
 2. Uploading Files:
    - To upload a file into the ChatGPT input box, make sure the file is in one of the supported formats: `.txt`, `.js`, `.py`, `.html`, `.css`, `.json`, `.csv`.
    - Click on the `Upload` button above the text input window.
    - Select the file you want to upload from your local computer.
    - The file will be parsed and its content will be populated into the ChatGPT input box.
+   
 3. Prompt prompts:
-   - Start by entering a specific prompt, such as `'/linux'`, which  indicates the type of response you want from ChatGPT.
+   - Support Chinese and English `prompt`.
+   
+     > such as `'/linux'`, which indicates that you want the prompt in English.
+     >
+     > such as `'#充当Linux客户端'`, which indicates that you want the prompt in Chinese.
+   
    - You can navigate through the prompt list using the up and down arrow keys on your keyboard. Move up or down to highlight the desired prompt.
+   
    - Press the confirmation key (usually Enter) to select and send that prompt directly to ChatGPT for processing.
+   
    - Alternatively, you can click on any prompt in the list with your mouse. The complete prompt will then be inserted into the input box.
+   
    - Supports custom addition and deletion of prompts.
 ## Show
 
@@ -85,7 +95,7 @@ Contributions to the ChatterKeep Plugin are welcome! If you find any issues or h
 
 ## Thanks
 
-Many thanks to [Awesome ChatGPT Prompts]([f/awesome-chatgpt-prompts: This repo includes ChatGPT prompt curation to use ChatGPT better. (github.com)](https://github.com/f/awesome-chatgpt-prompts)). The default prompts provided by this plugin all come from him.
+Many thanks to [Awesome ChatGPT Prompts](https://github.com/f/awesome-chatgpt-prompts) and [PlexPt/awesome-chatgpt-prompts-zh](https://github.com/PlexPt/awesome-chatgpt-prompts-zh). The default prompts provided by this plugin all come from them.
 
 ## License
 
