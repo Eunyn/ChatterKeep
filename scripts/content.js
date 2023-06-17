@@ -82,8 +82,10 @@ function initExecute() {
       return entry.cmd === cmdInput;
     });
 
+
     if (index !== -1) {
-      return;
+      prompts.splice(index, 1);
+      // return;
     }
     
     var newEntry = {
