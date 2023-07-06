@@ -153,7 +153,7 @@ function initPrompt() {
 
     // let selectedIndex = -1;
     function keyDown(event) {
-      if (!promptTextarea.value.startsWith('/')) {
+      if (!promptTextarea.value.startsWith("/") && !promptTextarea.value.startsWith("#")) {
         return;
       }
 
