@@ -222,13 +222,7 @@ function initExecute() {
       markdownContent += '```\n\n';
     }
 
-    const link = document.createElement('a');
-    link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(markdownContent)}`;
-    link.download = fileName + '.md';
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    downloadFileByType('.md', markdownContent);
   }
 
 
@@ -245,9 +239,14 @@ function initExecute() {
       textContent += `A: ${answer}\n\n`;
     }
 
+    downloadFileByType('.txt', textContent);    
+  }
+
+
+  function downloadFileByType(type, content) {
     const link = document.createElement('a');
-    link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(textContent)}`;
-    link.download = fileName + '.txt';
+    link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
+    link.download = fileName + type;
     link.style.display = 'none';
     document.body.appendChild(link);
     link.click();
@@ -275,9 +274,9 @@ function initExecute() {
           const pdf = await pdfjsLib.getDocument(typedarray).promise;
 
           const numPages = pdf.numPages;
-          let text = '';
-
           for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+            let text = '';
+
             const page = await pdf.getPage(pageNumber);
             const textContent = await page.getTextContent();
             const pageText = textContent.items.map(item => item.str).join(' ');
@@ -286,6 +285,7 @@ function initExecute() {
             text += `Page ${pageNumber}:\n${pageText}\n\n`;
 
             await submitConversation(text, pageNumber, file.name);
+            
             const submit = document.getElementById('prompt-textarea');
             if (submit) {
               submit.nextElementSibling.click();
@@ -324,15 +324,9 @@ function initExecute() {
             submit.nextElementSibling.click();
           }
 
-          // Make sure that ChatGPT has finished processing the previous request
           let chatgptReady = false;
           while (!chatgptReady) {
-            // Stop generating ===> btn relative btn-neutral border-0 md:border
             await new Promise((resolve) => setTimeout(resolve, 5000));
-            // const submitButton = document.getElementById('prompt-textarea');
-            // if (submitButton) {
-            //   chatgptReady = !submitButton.disabled;
-            // }
             const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
             if (stopGenerating) {
               chatgptReady = stopGenerating.textContent !== "Stop generating";
@@ -361,7 +355,7 @@ function initExecute() {
       bubbles: true,
       cancelable: true,
     });
-    textarea.value = `Part ${part} of ${filename}:\n${text}`;
+    textarea.value = `Part ${part} of ${filename}:\n\n${text}`;
     textarea.dispatchEvent(inputEvent);
   }
 
