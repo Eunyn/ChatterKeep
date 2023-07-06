@@ -259,46 +259,94 @@ function initExecute() {
   function uploadFile() {
     const upload = document.createElement('input');
     upload.type = 'file';
-    upload.accept = '.txt, .js, .py, .html, .css, .json, .csv, .c, .cpp, .java, .go, .rs, .php, .sql';
+    upload.accept = '.txt, .js, .py, .html, .css, .json, .csv, .c, .cpp, .java, .go, .rs, .php, .sql, .pdf';
 
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-      const chunkSize = 10000;
-      let offset = 0;
-      let part = 1;
 
-      while (offset < file.size) {
-        const chunk = file.slice(offset, offset + chunkSize);
-        const text = await new Promise((resolve) => {
-          reader.onload = (event) => resolve(event.target.result);
-          reader.readAsText(chunk);
-        });
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
-        await submitConversation(text, part, file.name);
+      if (file.type === 'application/pdf') {
+        reader.onload = async (event) => {
+          const typedarray = new Uint8Array(event.target.result);
+
+          // Load the PDF using PDF.js
+          const pdf = await pdfjsLib.getDocument(typedarray).promise;
+
+          const numPages = pdf.numPages;
+          let text = '';
+
+          for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+            const page = await pdf.getPage(pageNumber);
+            const textContent = await page.getTextContent();
+            const pageText = textContent.items.map(item => item.str).join(' ');
+
+            // Append page text to the overall text
+            text += `Page ${pageNumber}:\n${pageText}\n\n`;
+
+            await submitConversation(text, pageNumber, file.name);
+            const submit = document.getElementById('prompt-textarea');
+            if (submit) {
+              submit.nextElementSibling.click();
+            }
+
+            let chatgptReady = false;
+            while (!chatgptReady) {
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+              const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+              if (stopGenerating) {
+                chatgptReady = stopGenerating.textContent !== "Stop generating";
+              }
+            }
+
+            text = '';
+          }
+        };
+
+        reader.readAsArrayBuffer(file);
+      } else {
+        const chunkSize = 10000;
+        let offset = 0;
+        let part = 1;
+
+        while (offset < file.size) {
+          const chunk = file.slice(offset, offset + chunkSize);
+          const text = await new Promise((resolve) => {
+            reader.onload = (event) => resolve(event.target.result);
+            reader.readAsText(chunk);
+          });
+
+          await submitConversation(text, part, file.name);
+
+          const submit = document.getElementById('prompt-textarea');
+          if (submit) {
+            submit.nextElementSibling.click();
+          }
+
+          // Make sure that ChatGPT has finished processing the previous request
+          let chatgptReady = false;
+          while (!chatgptReady) {
+            // Stop generating ===> btn relative btn-neutral border-0 md:border
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            // const submitButton = document.getElementById('prompt-textarea');
+            // if (submitButton) {
+            //   chatgptReady = !submitButton.disabled;
+            // }
+            const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+            if (stopGenerating) {
+              chatgptReady = stopGenerating.textContent !== "Stop generating";
+            }
+          }
+
+          offset += chunkSize;
+          part++;
+        }
 
         const submit = document.getElementById('prompt-textarea');
-        if (submit) {
+        if (submit && submit.value) {
           submit.nextElementSibling.click();
         }
-
-        // Make sure that ChatGPT has finished processing the previous request
-        let chatgptReady = false;
-        while (!chatgptReady) {
-          await new Promise((resolve) => setTimeout(resolve, 8000));
-          const submitButton = document.getElementById('prompt-textarea');
-          if (submitButton) {
-            chatgptReady = !submitButton.disabled;
-          }
-        }
-
-        offset += chunkSize;
-        part++;
-      }
-
-      const submit = document.getElementById('prompt-textarea');
-      if (submit && submit.value) {
-        submit.nextElementSibling.click();
       }
 
     });
