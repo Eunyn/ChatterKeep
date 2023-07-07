@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ChatterKeep",
   "author": "Eun",
-  "version": "2.0",
+  "version": "2.3.2",
   "description": "An extension that allows you to save conversation and upload files.",
   "permissions": [
     "tabs",
@@ -16,13 +16,14 @@
     {
       "matches": ["https://chat.openai.com/*"],
       "js": [
-        "./scripts/mammoth.browser.min.js",
-        "./scripts/pdf.min.js",
+        "./scripts/tools/mammoth.browser.min.js",
+        "./scripts/tools/pdf.min.js",
+        "./scripts/tools/simhei-normal.js", 
+        "./scripts/tools/jspdf.umd.min.js", 
+        "./scripts/prompts/prompts-eng.js",
+        "./scripts/prompts/prompts-zh.js",
         "./scripts/popup.js",
-        "./scripts/promptDatas.js",
         "./scripts/prompts.js", 
-        "./scripts/simhei-normal.js", 
-        "./scripts/jspdf.umd.min.js", 
         "./scripts/content.js"
       ],
       "run_at": "document_end"
