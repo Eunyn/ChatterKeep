@@ -258,7 +258,7 @@ function initExecute() {
   function uploadFile() {
     const upload = document.createElement('input');
     upload.type = 'file';
-    upload.accept = '.txt, .js, .py, .html, .css, .json, .csv, .c, .cpp, .java, .go, .rs, .php, .sql, .pdf';
+    upload.accept = '.txt, .pdf, .docx, .csv, .js, .py, .html, .css, .json, .c, .cpp, .java, .go, .rs, .php, .sql';
 
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
@@ -305,7 +305,55 @@ function initExecute() {
         };
 
         reader.readAsArrayBuffer(file);
-      } else {
+      } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+          reader.onload = async (event) => {
+          const arrayBuffer = event.target.result;
+
+          // Convert the Word file to HTML using mammoth.js
+          const result = await new Promise((resolve, reject) => {
+            const options = {
+              arrayBuffer: arrayBuffer,
+            };
+
+            mammoth.extractRawText(options)
+              .then((result) => {
+                resolve(result.value);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          });
+
+          // Split the HTML content by length
+          const byteLength = 10000; // Define the desired byte length
+          const pages = splitHTMLByLength(result, byteLength);
+          // console.log("result_length: " + result.length);
+          // console.log("pages_length: " + pages.length);
+
+          for (let i = 0; i < pages.length; i++) {
+            const pageContent = pages[i].replace(/\n/g, ' '); // Replace line breaks with spaces
+            const pageNumber = i + 1;
+
+            await submitConversation(pageContent, pageNumber, file.name);
+
+            const submit = document.getElementById('prompt-textarea');
+            if (submit) {
+              submit.nextElementSibling.click();
+            }
+
+            let chatgptReady = false;
+            while (!chatgptReady) {
+              await new Promise((resolve) => setTimeout(resolve, 5000));
+              const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+              if (stopGenerating) {
+                chatgptReady = stopGenerating.textContent !== "Stop generating";
+              }
+            }
+          }
+        };
+
+        reader.readAsArrayBuffer(file);
+    } else {
         const chunkSize = 10000;
         let offset = 0;
         let part = 1;
@@ -342,12 +390,31 @@ function initExecute() {
           submit.nextElementSibling.click();
         }
       }
-
     });
 
     upload.click();
   }
 
+  function splitHTMLByLength(text, length) {
+    const parts = [];
+    let temp = '';
+
+    for (let i = 0; i < text.length; i++) {
+      const char = text[i];
+      temp += char;
+
+      if (temp.length >= length && (i === text.length - 1 || text[i + 1] === ' ')) {
+        parts.push(temp);
+        temp = '';
+      }
+    }
+
+    if (temp.length > 0) {
+      parts.push(temp);
+    }
+
+    return parts;
+  }
 
   function submitConversation(text, part, filename) {
     const textarea = document.querySelector("textarea");

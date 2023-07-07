@@ -16,6 +16,7 @@
     {
       "matches": ["https://chat.openai.com/*"],
       "js": [
+        "./scripts/mammoth.browser.min.js",
         "./scripts/pdf.min.js",
         "./scripts/popup.js",
         "./scripts/promptDatas.js",
