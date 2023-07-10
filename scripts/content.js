@@ -258,137 +258,22 @@ function initExecute() {
   function uploadFile() {
     const upload = document.createElement('input');
     upload.type = 'file';
-    upload.accept = '.txt, .pdf, .docx, .csv, .js, .py, .html, .css, .json, .c, .cpp, .java, .go, .rs, .php, .sql';
+    upload.accept = '.txt, .pdf, .docx, .xlsx, .js, .py, .html, .css, .json, .c, .cpp, .java, .go, .rs, .php, .sql';
 
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-
+      const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
       if (file.type === 'application/pdf') {
-        reader.onload = async (event) => {
-          const typedarray = new Uint8Array(event.target.result);
-
-          // Load the PDF using PDF.js
-          const pdf = await pdfjsLib.getDocument(typedarray).promise;
-
-          const numPages = pdf.numPages;
-          for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-            let text = '';
-
-            const page = await pdf.getPage(pageNumber);
-            const textContent = await page.getTextContent();
-            const pageText = textContent.items.map(item => item.str).join(' ');
-
-            // Append page text to the overall text
-            text += `Page ${pageNumber}:\n${pageText}\n\n`;
-
-            await submitConversation(text, pageNumber, file.name);
-            
-            const submit = document.getElementById('prompt-textarea');
-            if (submit) {
-              submit.nextElementSibling.click();
-            }
-
-            let chatgptReady = false;
-            while (!chatgptReady) {
-              await new Promise((resolve) => setTimeout(resolve, 5000));
-              const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-              if (stopGenerating) {
-                chatgptReady = stopGenerating.textContent !== "Stop generating";
-              }
-            }
-
-            text = '';
-          }
-        };
-
-        reader.readAsArrayBuffer(file);
+        uploadPDFFile(file, reader, currentConversationName);
       } else if (file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-          reader.onload = async (event) => {
-          const arrayBuffer = event.target.result;
-
-          // Convert the Word file to HTML using mammoth.js
-          const result = await new Promise((resolve, reject) => {
-            const options = {
-              arrayBuffer: arrayBuffer,
-            };
-
-            mammoth.extractRawText(options)
-              .then((result) => {
-                resolve(result.value);
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-
-          // Split the HTML content by length
-          const byteLength = 10000; // Define the desired byte length
-          const pages = splitHTMLByLength(result, byteLength);
-          // console.log("result_length: " + result.length);
-          // console.log("pages_length: " + pages.length);
-
-          for (let i = 0; i < pages.length; i++) {
-            const pageContent = pages[i].replace(/\n/g, ' '); // Replace line breaks with spaces
-            const pageNumber = i + 1;
-
-            await submitConversation(pageContent, pageNumber, file.name);
-
-            const submit = document.getElementById('prompt-textarea');
-            if (submit) {
-              submit.nextElementSibling.click();
-            }
-
-            let chatgptReady = false;
-            while (!chatgptReady) {
-              await new Promise((resolve) => setTimeout(resolve, 5000));
-              const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-              if (stopGenerating) {
-                chatgptReady = stopGenerating.textContent !== "Stop generating";
-              }
-            }
-          }
-        };
-
-        reader.readAsArrayBuffer(file);
-    } else {
-        const chunkSize = 10000;
-        let offset = 0;
-        let part = 1;
-
-        while (offset < file.size) {
-          const chunk = file.slice(offset, offset + chunkSize);
-          const text = await new Promise((resolve) => {
-            reader.onload = (event) => resolve(event.target.result);
-            reader.readAsText(chunk);
-          });
-
-          await submitConversation(text, part, file.name);
-
-          const submit = document.getElementById('prompt-textarea');
-          if (submit) {
-            submit.nextElementSibling.click();
-          }
-
-          let chatgptReady = false;
-          while (!chatgptReady) {
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-            if (stopGenerating) {
-              chatgptReady = stopGenerating.textContent !== "Stop generating";
-            }
-          }
-
-          offset += chunkSize;
-          part++;
-        }
-
-        const submit = document.getElementById('prompt-textarea');
-        if (submit && submit.value) {
-          submit.nextElementSibling.click();
-        }
+        uploadWordFile(file, reader, currentConversationName);
+      } else  if (file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+        uploadExcelFile(file, reader, currentConversationName);
+      } else {
+        uploadPlainTextFile(file, reader, currentConversationName);
       }
     });
 
@@ -424,6 +309,200 @@ function initExecute() {
     });
     textarea.value = `Part ${part} of ${filename}:\n\n${text}`;
     textarea.dispatchEvent(inputEvent);
+  }
+
+
+  function uploadPDFFile(file, reader, currentConversationName) {
+    reader.onload = async (event) => {
+        const typedarray = new Uint8Array(event.target.result);
+
+        // Load the PDF using PDF.js
+        const pdf = await pdfjsLib.getDocument(typedarray).promise;
+        const numPages = pdf.numPages;
+        for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+          if (currentConversationName != currentName) {
+            console.log('Conversation has been changed');
+            break;
+          }
+
+          let text = '';
+
+          const page = await pdf.getPage(pageNumber);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items.map(item => item.str).join(' ');
+
+          // Append page text to the overall text
+          text += `Page ${pageNumber}:\n${pageText}\n\n`;
+
+          await submitConversation(text, pageNumber, file.name);
+          
+          const submit = document.getElementById('prompt-textarea');
+          if (submit) {
+            submit.nextElementSibling.click();
+          }
+
+          let chatgptReady = false;
+          while (!chatgptReady) {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+            if (stopGenerating) {
+              chatgptReady = stopGenerating.textContent !== "Stop generating";
+            }
+          }
+
+          text = '';
+        }
+      };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+
+  function uploadWordFile(file, reader, currentConversationName) {
+    reader.onload = async (event) => {
+      const arrayBuffer = event.target.result;
+
+      // Convert the Word file to HTML using mammoth.js
+      const result = await new Promise((resolve, reject) => {
+        const options = {
+          arrayBuffer: arrayBuffer,
+        };
+
+        mammoth.extractRawText(options)
+          .then((result) => {
+            resolve(result.value);
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      });
+
+      // Split the HTML content by length
+      const byteLength = 10000; // Define the desired byte length
+      const pages = splitHTMLByLength(result, byteLength);
+
+      for (let i = 0; i < pages.length; i++) {
+        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+        if (currentConversationName != currentName) {
+          console.log('Conversation has been changed');
+          break;
+        }
+
+        const pageContent = pages[i].replace(/\n/g, ' '); // Replace line breaks with spaces
+        const pageNumber = i + 1;
+
+        await submitConversation(pageContent, pageNumber, file.name);
+
+        const submit = document.getElementById('prompt-textarea');
+        if (submit) {
+          submit.nextElementSibling.click();
+        }
+
+        let chatgptReady = false;
+        while (!chatgptReady) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+          if (stopGenerating) {
+            chatgptReady = stopGenerating.textContent !== "Stop generating";
+          }
+        }
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+
+  function uploadExcelFile(file, reader, currentConversationName) {
+    reader.onload = async (event) => {
+      let data = new Uint8Array(event.target.result);
+      let workbook = XLSX.read(data, {type: 'array'});
+
+      // If you want to read the first sheet into an array of arrays
+      const worksheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[worksheetName];
+      const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+      const chunkSize = 5;
+      // Function to split array into chunks
+      function chunkArray(myArray, chunk_size){
+        let results = [];
+        while (myArray.length) {
+          results.push(myArray.splice(0, chunk_size));
+        }
+        return results;
+      }
+
+      // Split jsonData into chunks
+      let chunks = chunkArray(jsonData, chunkSize);
+      // console.log('length: ' + chunks.length);
+      // console.log('chunks[0]: ' + chunks[0]);
+      for(let i = 0; i < chunks.length; i++) {
+        await submitConversation(chunks[i], i + 1, file.name);
+
+        const submit = document.getElementById('prompt-textarea');
+        if (submit) {
+          submit.nextElementSibling.click();
+        }
+
+        let chatgptReady = false;
+        while (!chatgptReady) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+          if (stopGenerating) {
+            chatgptReady = stopGenerating.textContent !== "Stop generating";
+          }
+        }
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+
+
+  async function uploadPlainTextFile(file, reader, currentConversationName) {
+    const chunkSize = 10000;
+    let offset = 0;
+    let part = 1;
+
+    while (offset < file.size) {
+      const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+      if (currentConversationName != currentName) {
+        console.log('Conversation has been changed');
+        break;
+      }
+        
+      const chunk = file.slice(offset, offset + chunkSize);
+      const text = await new Promise((resolve) => {
+        reader.onload = (event) => resolve(event.target.result);
+        reader.readAsText(chunk);
+      });
+
+      await submitConversation(text, part, file.name);
+
+      const submit = document.getElementById('prompt-textarea');
+      if (submit) {
+        submit.nextElementSibling.click();
+      }
+
+      let chatgptReady = false;
+      while (!chatgptReady) {
+        await new Promise((resolve) => setTimeout(resolve, 5000));
+        const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+        if (stopGenerating) {
+          chatgptReady = stopGenerating.textContent !== "Stop generating";
+        }
+      }
+
+      offset += chunkSize;
+      part++;
+    }
+
+    const submit = document.getElementById('prompt-textarea');
+    if (submit && submit.value) {
+      submit.nextElementSibling.click();
+    }
   }
 
 
