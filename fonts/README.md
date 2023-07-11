@@ -6,7 +6,7 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
 ## 功能
 
 - 以 `PDF`、`Markdown` 和`Text`格式导出与 ChatGPT 的对话。
-- 将文件上传到 ChatGPT 输入框中，以便轻松填充内容。支持以下文件格式：`.txt`、`.js`、`.py`、`.html`、`.css`、`.json`、`.csv`。
+- 将文件上传到 ChatGPT 输入框中，以便轻松填充内容。支持以下文件格式：`.txt`, `.pdf`, `.docx`, `.xlsx`,` .js`, `.py`, `.html`, `.css`, `.json`, `.c`, `.cpp`, `.java`, `.go`, `.rs`, `.php`, `.sql`。
 - 允许您创建 ChatGPT 生成的代码文件。
 - 提供一组预定义的`Prompt`提示，以增强与 ChatGPT 的交互。
 

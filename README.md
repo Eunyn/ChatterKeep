@@ -42,7 +42,7 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
    - The file will be downloaded to your default download location.
    
 2. Uploading Files:
-   - To upload a file into the ChatGPT input box, make sure the file is in one of the supported formats: `.txt`, `.js`, `.py`, `.html`, `.css`, `.json`, `.csv`.
+   - To upload a file into the ChatGPT input box, make sure the file is in one of the supported formats: `.txt`, `.pdf`, `.docx`, `.xlsx`,` .js`, `.py`, `.html`, `.css`, `.json`, `.c`, `.cpp`, `.java`, `.go`, `.rs`, `.php`, `.sql`.
    - Click on the `Upload` button above the text input window.
    - Select the file you want to upload from your local computer.
    - The file will be parsed and its content will be populated into the ChatGPT input box.

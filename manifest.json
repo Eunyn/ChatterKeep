@@ -2,12 +2,10 @@
   "manifest_version": 3,
   "name": "ChatterKeep",
   "author": "Eun",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "An extension that allows you to save conversation and upload files.",
   "permissions": [
-    "tabs",
-    "activeTab",
-    "webRequest"
+    "activeTab"
   ],
   "optional_host_permissions": [
     "*://*/*"

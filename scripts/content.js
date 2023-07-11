@@ -226,7 +226,6 @@ function initExecute() {
   }
 
 
-
   function saveQAndAAsText(questions, answers) {
     let textContent = '';
 
@@ -254,7 +253,6 @@ function initExecute() {
   }
 
 
-
   function uploadFile() {
     const upload = document.createElement('input');
     upload.type = 'file';
@@ -280,26 +278,6 @@ function initExecute() {
     upload.click();
   }
 
-  function splitHTMLByLength(text, length) {
-    const parts = [];
-    let temp = '';
-
-    for (let i = 0; i < text.length; i++) {
-      const char = text[i];
-      temp += char;
-
-      if (temp.length >= length && (i === text.length - 1 || text[i + 1] === ' ')) {
-        parts.push(temp);
-        temp = '';
-      }
-    }
-
-    if (temp.length > 0) {
-      parts.push(temp);
-    }
-
-    return parts;
-  }
 
   function submitConversation(text, part, filename) {
     const textarea = document.querySelector("textarea");
@@ -378,21 +356,26 @@ function initExecute() {
           });
       });
 
-      // Split the HTML content by length
-      const byteLength = 10000; // Define the desired byte length
-      const pages = splitHTMLByLength(result, byteLength);
+      const chunkSizeInBytes = 1024 * 10; // Adjust as needed
+      const chunkSize = Math.floor(chunkSizeInBytes / 2); // 1 JavaScript character is 2 bytes
+      const text = result.replace(/\n/g, ' '); // Replace line breaks with spaces
 
-      for (let i = 0; i < pages.length; i++) {
+      const chunks = [];
+      for (let i = 0; i < text.length; i += chunkSize) {
+        chunks.push(text.slice(i, i + chunkSize));
+      }
+
+      for (let i = 0; i < chunks.length; i++) {
         const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
         if (currentConversationName != currentName) {
           console.log('Conversation has been changed');
           break;
         }
 
-        const pageContent = pages[i].replace(/\n/g, ' '); // Replace line breaks with spaces
-        const pageNumber = i + 1;
+        const chunkContent = chunks[i];
+        const chunkNumber = i + 1;
 
-        await submitConversation(pageContent, pageNumber, file.name);
+        await submitConversation(chunkContent, chunkNumber, file.name);
 
         const submit = document.getElementById('prompt-textarea');
         if (submit) {
@@ -416,45 +399,59 @@ function initExecute() {
 
   function uploadExcelFile(file, reader, currentConversationName) {
     reader.onload = async (event) => {
-      let data = new Uint8Array(event.target.result);
-      let workbook = XLSX.read(data, {type: 'array'});
+        let data = new Uint8Array(event.target.result);
+        let workbook = XLSX.read(data, {type: 'array'});
 
-      // If you want to read the first sheet into an array of arrays
-      const worksheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[worksheetName];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+        const chunkSizeInBytes = 10 * 1024; // adjust this as needed
 
-      const chunkSize = 5;
-      // Function to split array into chunks
-      function chunkArray(myArray, chunk_size){
-        let results = [];
-        while (myArray.length) {
-          results.push(myArray.splice(0, chunk_size));
-        }
-        return results;
-      }
-
-      // Split jsonData into chunks
-      let chunks = chunkArray(jsonData, chunkSize);
-      // console.log('length: ' + chunks.length);
-      // console.log('chunks[0]: ' + chunks[0]);
-      for(let i = 0; i < chunks.length; i++) {
-        await submitConversation(chunks[i], i + 1, file.name);
-
-        const submit = document.getElementById('prompt-textarea');
-        if (submit) {
-          submit.nextElementSibling.click();
+        // Function to split array into chunks
+        function chunkArray(myArray, chunk_size_in_bytes){
+            let results = [];
+            let chunk = [];
+            let chunkSize = 0;
+            for (const item of myArray) {
+                const itemSize = JSON.stringify(item).length * 2;
+                if (chunkSize + itemSize > chunk_size_in_bytes) {
+                    results.push(chunk);
+                    chunk = [item];
+                    chunkSize = itemSize;
+                } else {
+                    chunk.push(item);
+                    chunkSize += itemSize;
+                }
+            }
+            if (chunk.length > 0) {
+                results.push(chunk);
+            }
+            return results;
         }
 
-        let chatgptReady = false;
-        while (!chatgptReady) {
-          await new Promise((resolve) => setTimeout(resolve, 5000));
-          const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-          if (stopGenerating) {
-            chatgptReady = stopGenerating.textContent !== "Stop generating";
-          }
+        // Iterate over each sheet
+        for (let sheetName of workbook.SheetNames) {
+            let worksheet = workbook.Sheets[sheetName];
+            let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+            // Split jsonData into chunks
+            let chunks = chunkArray(jsonData, chunkSizeInBytes);
+
+            for(let i = 0; i < chunks.length; i++) {
+                await submitConversation(chunks[i], i + 1, file.name);
+
+                const submit = document.getElementById('prompt-textarea');
+                if (submit) {
+                    submit.nextElementSibling.click();
+                }
+
+                let chatgptReady = false;
+                while (!chatgptReady) {
+                    await new Promise((resolve) => setTimeout(resolve, 5000));
+                    const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+                    if (stopGenerating) {
+                        chatgptReady = stopGenerating.textContent !== "Stop generating";
+                    }
+                }
+            }
         }
-      }
     };
 
     reader.readAsArrayBuffer(file);
@@ -462,7 +459,7 @@ function initExecute() {
 
 
   async function uploadPlainTextFile(file, reader, currentConversationName) {
-    const chunkSize = 10000;
+    const chunkSize = 10 * 1024;
     let offset = 0;
     let part = 1;
 
@@ -578,10 +575,6 @@ function initExecute() {
       });
     });
   }).observe(document.body, { childList: true, subtree: true });
-
-
-
-
 }
 
 
