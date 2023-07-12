@@ -534,7 +534,15 @@ function initExecute() {
             '{"lang": "php", "suffix": ".php"},' +
             '{"lang": "shell", "suffix": ".sh"},' +
             '{"lang": "mysql", "suffix": ".sql"},' +
-            '{"lang": "c#", "suffix": ".cs"}]}';
+            '{"lang": "c#", "suffix": ".cs"},' + 
+            '{"lang": "json", "suffix": ".json"},' +
+            '{"lang": "properties", "suffix": ".properties"},' + 
+            '{"lang": "ini", "suffix": ".ini"},' + 
+            '{"lang": "xml", "suffix": ".xml"},' + 
+            '{"lang": "kotlin ", "suffix": ".kt"},' + 
+            '{"lang": "swift", "suffix": ".swift"},' + 
+            '{"lang": "jsp", "suffix": ".jsp"},' + 
+            '{"lang": "R", "suffix": ".R"}]}';
 
         types = JSON.parse(typeLists);
         let type = '.txt';
