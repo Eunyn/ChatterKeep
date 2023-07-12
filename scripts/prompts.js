@@ -51,9 +51,7 @@ function initPrompt() {
       promptsElement.style.display = 'none';
       //  Insert the div element above the target element
       if (targetElement) {
-        // targetElement.appendChild(promptsElement);
         targetElement.parentNode.insertBefore(promptsElement, targetElement);
-        // codeContainer.insertAdjacentElement("afterbegin", createFileButton);
       }
 
       promptsElement = document.querySelector('#suggestionBox');
@@ -63,12 +61,6 @@ function initPrompt() {
     function promptsShow() {
       let promptsElement = document.querySelector('#suggestionBox');
       if (promptsElement) {
-        // var promptLists = localStorage.getItem('prompts-eng');
-        // if (!promptLists) {
-        //   promptLists = jsonData;
-        // } else {
-        //   promptLists = JSON.parse(promptLists);
-        // }
 
         const input = promptTextarea.value.toLowerCase();
         const promptLists = getPromptType(input);
@@ -82,7 +74,6 @@ function initPrompt() {
           matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
         }
         // const matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
-
 
         if (input && matchingItems.length > 0) {
           promptsElement.innerHTML = '';
@@ -107,7 +98,6 @@ function initPrompt() {
                 promptsElement.style.display = 'none';
               }
             });
-
 
             promptsElement.appendChild(suggestionItem);
           });
@@ -181,16 +171,12 @@ function initPrompt() {
 
         if (event.key === 'Enter') {
           const input = promptTextarea.value.toLowerCase();
-          var promptLists = localStorage.getItem('promptDatas');
-          if (!promptLists) {
-            promptLists = jsonData;
-          } else {
-            promptLists = JSON.parse(promptLists);
-          }
+          const promptLists = getPromptType(input);
 
           const selectedItem = promptLists.find(item => item.cmd === input);
           if (selectedItem) {
             promptTextarea.value = selectedItem.prompt;
+            console.log('prompt: ' + selectedItem.prompt);
             promptsElement.style.display = 'none';
           }
         }
