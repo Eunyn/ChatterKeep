@@ -7,9 +7,6 @@
   "permissions": [
     "activeTab"
   ],
-  "optional_host_permissions": [
-    "*://*/*"
-  ],
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],

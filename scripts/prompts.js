@@ -176,7 +176,6 @@ function initPrompt() {
           const selectedItem = promptLists.find(item => item.cmd === input);
           if (selectedItem) {
             promptTextarea.value = selectedItem.prompt;
-            console.log('prompt: ' + selectedItem.prompt);
             promptsElement.style.display = 'none';
           }
         }
@@ -188,8 +187,6 @@ function initPrompt() {
         selectedIndex = -1;
 
         const divToDelete = document.querySelectorAll('.suggestion-item');
-        // divToDelete.textContent = '';
-        // divToDelete.innerHTML = '';
         divToDelete.forEach(div => {
           div.textContent = '';
           div.remove();
