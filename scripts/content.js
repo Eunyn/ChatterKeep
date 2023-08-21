@@ -6,12 +6,12 @@ function initExecute() {
 
   function execute() {
     getCurrentConversationName();
-    var questions = document.querySelectorAll('.group.w-full.text-gray-800.dark\\:text-gray-100.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
+    var questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
     var answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
 
     setInterval(() => {
       getCurrentConversationName();
-      questions = document.querySelectorAll('.group.w-full.text-gray-800.dark\\:text-gray-100.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
+      questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
       answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
 
       createCodeFile();
@@ -152,7 +152,7 @@ function initExecute() {
 
   let fileName = 'conversation';
   function getCurrentConversationName() {
-    const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+    const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
     if (currentConversationName) {
       fileName = currentConversationName.textContent;
     }
@@ -162,11 +162,11 @@ function initExecute() {
   function saveQAndAAsPDF(questions, answers) {
     // Create a new jsPDF instance
     const doc = new window.jspdf.jsPDF();
-    const fontPath = './fonts/simhei.ttf';
+    const fontPath = './fonts/simsunb.ttf';
     // Register the font with jsPDF
     doc.addFileToVFS(fontPath, font);
-    doc.addFont(fontPath, 'simhei', 'normal');
-    doc.setFont('simhei');
+    doc.addFont(fontPath, 'simsunb', 'normal');
+    doc.setFont('simsunb');
 
     let y = 10;
     for (let i = 0; i < questions.length; i++) {
@@ -261,7 +261,7 @@ function initExecute() {
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-      const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+      const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
       if (file.type === 'application/pdf') {
@@ -298,7 +298,7 @@ function initExecute() {
         const pdf = await pdfjsLib.getDocument(typedarray).promise;
         const numPages = pdf.numPages;
         for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
           if (currentConversationName != currentName) {
             console.log('Conversation has been changed');
             break;
@@ -337,6 +337,19 @@ function initExecute() {
   }
 
 
+  function setSizeByModel() {
+    var chunkSize = 1024;
+    const modelType = document.querySelector('[class="relative z-20 flex flex-wrap items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300"]');
+    if (modelType && modelType.textContent === 'Model: GPT-4') {
+      chunkSize = chunkSize * 4;
+    } else {
+      chunkSize = chunkSize * 10;
+    }
+
+    return chunkSize;
+  }
+
+
   function uploadWordFile(file, reader, currentConversationName) {
     reader.onload = async (event) => {
       const arrayBuffer = event.target.result;
@@ -356,7 +369,7 @@ function initExecute() {
           });
       });
 
-      const chunkSizeInBytes = 1024 * 10; // Adjust as needed
+      const chunkSizeInBytes = setSizeByModel();
       const chunkSize = Math.floor(chunkSizeInBytes / 2); // 1 JavaScript character is 2 bytes
       const text = result.replace(/\n/g, ' '); // Replace line breaks with spaces
 
@@ -366,7 +379,7 @@ function initExecute() {
       }
 
       for (let i = 0; i < chunks.length; i++) {
-        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
         if (currentConversationName != currentName) {
           console.log('Conversation has been changed');
           break;
@@ -402,7 +415,7 @@ function initExecute() {
         let data = new Uint8Array(event.target.result);
         let workbook = XLSX.read(data, {type: 'array'});
 
-        const chunkSizeInBytes = 10 * 1024; // adjust this as needed
+        const chunkSizeInBytes = setSizeByModel(); // adjust this as needed
 
         // Function to split array into chunks
         function chunkArray(myArray, chunk_size_in_bytes){
@@ -447,7 +460,7 @@ function initExecute() {
                     await new Promise((resolve) => setTimeout(resolve, 5000));
                     const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
                     if (stopGenerating) {
-                        chatgptReady = stopGenerating.textContent !== "Stop generating";
+                      chatgptReady = stopGenerating.textContent !== "Stop generating";
                     }
                 }
             }
@@ -459,7 +472,7 @@ function initExecute() {
 
 
   async function uploadPlainTextFile(file, reader, currentConversationName) {
-    const chunkSize = 10 * 1024;
+    const chunkSize = setSizeByModel();
     let offset = 0;
     let part = 1;
 
@@ -504,7 +517,9 @@ function initExecute() {
 
 
   function createCodeFile() {
-    const codeLists = document.querySelectorAll(".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md");
+    let domClass = getCodeBlockByAIType();
+
+    const codeLists = document.querySelectorAll(domClass.codeBlock);
     codeLists.forEach(codeContainer => {
       if (codeContainer.querySelector("#createfile")) {
         return;
@@ -520,7 +535,7 @@ function initExecute() {
       createFileButton.style.backgroundColor = "#28a745";
       createFileButton.style.fontWeight = "300";
       createFileButton.addEventListener("click", async () => {
-        const codeType = codeContainer.querySelector('.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span');
+        const codeType = codeContainer.querySelector(domClass.codeType);
         let typeLists = '{ "codes" : [' +
             '{"lang": "java", "suffix": ".java"},' + 
             '{"lang": "javascript", "suffix": ".js"},' +
@@ -546,9 +561,20 @@ function initExecute() {
 
         types = JSON.parse(typeLists);
         let type = '.txt';
+        let typeFound = false;
         if (codeType) {
           for (let i = 0; i < types.codes.length; i++) {
             if (codeType.textContent.trim() === types.codes[i].lang) {
+              type = types.codes[i].suffix;
+              typeFound = true;
+              break;
+            }
+          }
+        }
+
+        if (!typeFound) {
+          for (let i = 0; i < types.codes.length; i++) {
+            if (codeType.textContent.trim() === types.codes[i].suffix.substr(1)) {
               type = types.codes[i].suffix;
               break;
             }
@@ -558,7 +584,7 @@ function initExecute() {
         const filename = `new${type}`;
 
         const parentDiv = codeContainer.parentElement;
-        const codeContent = parentDiv.querySelector('.p-4.overflow-y-auto code').textContent;
+        const codeContent = parentDiv.querySelector(domClass.code).textContent;
 
         const blob = new Blob([codeContent], { type: "text/plain" });
         const link = document.createElement("a");
@@ -577,12 +603,48 @@ function initExecute() {
   new MutationObserver((mutationsList) => {
     mutationsList.forEach((mutation) => {
       mutation.addedNodes.forEach((node) => {
-        if ( node.nodeType === Node.ELEMENT_NODE && node.matches(".flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md")) {
+        let domClass = getCodeBlockByAIType();
+        if ( node.nodeType === Node.ELEMENT_NODE && node.matches(domClass.codeBlock)) {
           createCodeFile();
         }
       });
     });
   }).observe(document.body, { childList: true, subtree: true });
+
+
+  function getCurrentUrl() {
+    let currentUrl = window.location.href;
+    console.log("currentUrl: " + currentUrl);
+    return currentUrl;
+  }
+
+
+  function getCodeBlockByAIType() {
+    let currentUrl = window.location.href;
+
+    let regExOpenAI = /^https:\/\/chat\.openai\.com\//;
+    let regExClaude = /^https:\/\/claude\.ai\/chat\//;
+
+    if (regExOpenAI.test(currentUrl)) {
+      let domClass = {
+        codeBlock: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md',
+        codeType: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span',
+        code: '.p-4.overflow-y-auto code'
+      };
+
+      return domClass;
+    }
+
+    if (regExClaude.test(currentUrl)) {
+      let domClass = {
+        codeBlock: '.flex.justify-between.items-center.pt-1.pl-3',
+        codeType: '.text-\\[11px\\].text-stone-300',
+        code: 'code'
+      };
+
+      return domClass;
+    }
+  }
 }
 
 
