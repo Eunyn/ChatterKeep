@@ -645,6 +645,168 @@ function initExecute() {
       return domClass;
     }
   }
+
+
+  // let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
+  // let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
+  let timerStarted = false; // Flag to indicate if timer has started
+  let timer; // Variable to store timer
+
+  // sendMessage();
+
+  function sendMessage() {
+    console.log('...sendMessage...');
+    // let button = document.querySelector('[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]');
+    // let textarea = document.getElementById("prompt-textarea");
+    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+
+    if (divElement) {
+      if (divElement.textContent === 'GPT-4Custom instructions details') {
+        console.log('GPT-4');
+        let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
+        sendEvent(messageCountGPT4, 'GPT-4');
+      } else {
+        console.log('GPT-3.5');
+        let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
+        sendEvent(messageCountGPT3_5, 'GPT-3.5');
+      }
+    } else {
+      console.log('not found');
+    }
+  }
+
+  let button = document.querySelector('[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]');
+  let textarea = document.getElementById("prompt-textarea");
+
+  button.addEventListener('click', function() {
+    handleEvent(messageCount, modelType);
+  });
+
+  // Event listener for keyboard's Enter key
+  textarea.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault(); // Prevent the default action (e.g., line break)
+      handleEvent(messageCount, modelType);
+    }
+  });
+
+
+  // function sendEvent(messageCount, modelType) {
+  //   console.log('...sendEvent...');
+  //   // Event listener for button click
+  //   button.addEventListener('click', function() {
+  //     handleEvent(messageCount, modelType);
+  //   });
+
+  //   // Event listener for keyboard's Enter key
+  //   textarea.addEventListener('keydown', function(event) {
+  //     if (event.key === 'Enter' && !event.shiftKey) {
+  //       event.preventDefault(); // Prevent the default action (e.g., line break)
+  //       handleEvent(messageCount, modelType);
+  //     }
+  //   });
+  // }
+
+  function handleEvent(messageCount, modelType) {
+    console.log('...handleEvent...');
+
+    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+
+    if (divElement) {
+      if (divElement.textContent === 'GPT-4Custom instructions details') {
+        console.log('GPT-4');
+        let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
+        // sendEvent(messageCountGPT4, 'GPT-4');
+        modelType = 'GPT-4';
+      } else {
+        console.log('GPT-3.5');
+        let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
+        // sendEvent(messageCountGPT3_5, 'GPT-3.5');
+        modelType = 'GPT-3.5';
+      }
+    } else {
+      console.log('not found');
+    }
+    
+
+    if (modelType === 'GPT-4') {
+      if (!timerStarted) {
+        startTimerGPT4(messageCount, modelType);
+      }
+
+      messageCount++;
+      updateMessageCount(messageCount, modelType);
+    } else {
+      if (!timerStarted) {
+        startTimerGPT3_5(messageCount, modelType);
+      }
+
+      messageCount++;
+      updateMessageCount(messageCount, modelType);
+    }
+  }
+
+  function startTimerGPT4(messageCount, modelType) {
+    initTimerDom();
+
+    console.log('...startTimerGPT4...');
+    timerStarted = true; // Set flag to true
+    timer = setTimeout(() => {
+      // Reset everything
+      messageCount = 0;
+      timerStarted = false;
+      updateMessageCount(messageCount, modelType); // Update the displayed count
+    }, 3 * 60 * 60 * 1000); // 3 hours in milliseconds
+  }
+
+  function startTimerGPT3_5(messageCount, modelType) {
+    initTimerDom();
+
+    console.log('...startTimerGPT3_5...');
+    // Calculate time until midnight
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+
+    const timeUntilMidnight = tomorrow - now; // time difference in milliseconds
+    
+    // Set timer to reset count at midnight
+    setTimeout(() => {
+      // Reset everything
+      messageCount = 0;
+      timerStarted = false;
+      updateMessageCount(messageCount, modelType); // Update the displayed count
+      
+      // Restart the timer for the next day
+      startTimerGPT3_5();
+    }, timeUntilMidnight);
+  }
+
+  function updateMessageCount(messageCount, modelType) {
+    console.log('...updateMessageCount...');
+    document.getElementById("messageCount").textContent = messageCount;
+    if (modelType === 'GPT-4') {
+      localStorage.setItem('modelGPT-4', messageCount); // Save the count in local storage
+    } else {
+      localStorage.setItem('modelGPT-3.5', messageCount); // Save the count in local storage
+    }
+  }
+
+  function initTimerDom() {
+    console.log('...initTimerDom...');
+    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+    if (divElement) {
+      const textNode = document.createTextNode("Total Messages Sent: ");
+      divElement.appendChild(textNode);
+      
+      const spanElement = document.createElement("span");
+      spanElement.id = "messageCount";
+      spanElement.textContent = "0";
+      
+      divElement.appendChild(spanElement);
+    }
+  }
 }
 
 
