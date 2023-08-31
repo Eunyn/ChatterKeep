@@ -15,6 +15,8 @@ function initExecute() {
       answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
 
       createCodeFile();
+
+      // initTimerDom();
     }, 3000);
 
 
@@ -444,10 +446,21 @@ function initExecute() {
             let worksheet = workbook.Sheets[sheetName];
             let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
+            const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+            if (currentConversationName != currentName) {
+              console.log('Conversation has been changed');
+              break;
+            }
+
             // Split jsonData into chunks
             let chunks = chunkArray(jsonData, chunkSizeInBytes);
 
             for(let i = 0; i < chunks.length; i++) {
+                const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+                if (currentConversationName != currentName) {
+                  console.log('Conversation has been changed');
+                  break;
+                }
                 await submitConversation(chunks[i], i + 1, file.name);
 
                 const submit = document.getElementById('prompt-textarea');
@@ -477,7 +490,7 @@ function initExecute() {
     let part = 1;
 
     while (offset < file.size) {
-      const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all pr-[4.5rem] )} )} bg-gray-800 hover:bg-gray-800 group"]');
+      const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
       if (currentConversationName != currentName) {
         console.log('Conversation has been changed');
         break;
@@ -607,6 +620,21 @@ function initExecute() {
         if ( node.nodeType === Node.ELEMENT_NODE && node.matches(domClass.codeBlock)) {
           createCodeFile();
         }
+
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="group w-full text-token-text-primary border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800"]')) {
+          console.log('init dom#########');
+          initTimerDom();
+        }
+
+        // Monitor for the dynamically appearing button
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="text-center mt-2 flex justify-center"]')) {
+          const saveSButton = document.querySelector('[class="btn relative btn-primary mr-2"]');
+          console.log("Added element:", node);
+          if (!saveSButton.myEventListener) { // Check if the event is already added
+            saveSButton.addEventListener('click', handleEvent);
+            saveSButton.myEventListener = true; // Flag that the event listener is added
+          }
+        }
       });
     });
   }).observe(document.body, { childList: true, subtree: true });
@@ -647,166 +675,147 @@ function initExecute() {
   }
 
 
-  // let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
-  // let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
-  let timerStarted = false; // Flag to indicate if timer has started
-  let timer; // Variable to store timer
-
-  // sendMessage();
-
-  function sendMessage() {
-    console.log('...sendMessage...');
-    // let button = document.querySelector('[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]');
-    // let textarea = document.getElementById("prompt-textarea");
-    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
-
-    if (divElement) {
-      if (divElement.textContent === 'GPT-4Custom instructions details') {
-        console.log('GPT-4');
-        let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
-        sendEvent(messageCountGPT4, 'GPT-4');
-      } else {
-        console.log('GPT-3.5');
-        let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
-        sendEvent(messageCountGPT3_5, 'GPT-3.5');
-      }
-    } else {
-      console.log('not found');
-    }
-  }
-
-  let button = document.querySelector('[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]');
-  let textarea = document.getElementById("prompt-textarea");
-
-  button.addEventListener('click', function() {
-    handleEvent(messageCount, modelType);
-  });
-
-  // Event listener for keyboard's Enter key
-  textarea.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault(); // Prevent the default action (e.g., line break)
-      handleEvent(messageCount, modelType);
-    }
-  });
-
-
-  // function sendEvent(messageCount, modelType) {
-  //   console.log('...sendEvent...');
-  //   // Event listener for button click
-  //   button.addEventListener('click', function() {
-  //     handleEvent(messageCount, modelType);
-  //   });
-
-  //   // Event listener for keyboard's Enter key
-  //   textarea.addEventListener('keydown', function(event) {
-  //     if (event.key === 'Enter' && !event.shiftKey) {
-  //       event.preventDefault(); // Prevent the default action (e.g., line break)
-  //       handleEvent(messageCount, modelType);
-  //     }
-  //   });
-  // }
-
-  function handleEvent(messageCount, modelType) {
-    console.log('...handleEvent...');
-
-    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
-
-    if (divElement) {
-      if (divElement.textContent === 'GPT-4Custom instructions details') {
-        console.log('GPT-4');
-        let messageCountGPT4 = parseInt(localStorage.getItem('modelGPT-4')) || 0; // Counter for messages
-        // sendEvent(messageCountGPT4, 'GPT-4');
-        modelType = 'GPT-4';
-      } else {
-        console.log('GPT-3.5');
-        let messageCountGPT3_5 = parseInt(localStorage.getItem('modelGPT-3.5')) || 0; // Counter for messages
-        // sendEvent(messageCountGPT3_5, 'GPT-3.5');
-        modelType = 'GPT-3.5';
-      }
-    } else {
-      console.log('not found');
-    }
-    
-
-    if (modelType === 'GPT-4') {
-      if (!timerStarted) {
-        startTimerGPT4(messageCount, modelType);
-      }
-
-      messageCount++;
-      updateMessageCount(messageCount, modelType);
-    } else {
-      if (!timerStarted) {
-        startTimerGPT3_5(messageCount, modelType);
-      }
-
-      messageCount++;
-      updateMessageCount(messageCount, modelType);
-    }
-  }
-
-  function startTimerGPT4(messageCount, modelType) {
-    initTimerDom();
-
-    console.log('...startTimerGPT4...');
-    timerStarted = true; // Set flag to true
-    timer = setTimeout(() => {
-      // Reset everything
-      messageCount = 0;
-      timerStarted = false;
-      updateMessageCount(messageCount, modelType); // Update the displayed count
-    }, 3 * 60 * 60 * 1000); // 3 hours in milliseconds
-  }
-
-  function startTimerGPT3_5(messageCount, modelType) {
-    initTimerDom();
-
-    console.log('...startTimerGPT3_5...');
-    // Calculate time until midnight
-    const now = new Date();
-    const tomorrow = new Date(now);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-
-    const timeUntilMidnight = tomorrow - now; // time difference in milliseconds
-    
-    // Set timer to reset count at midnight
-    setTimeout(() => {
-      // Reset everything
-      messageCount = 0;
-      timerStarted = false;
-      updateMessageCount(messageCount, modelType); // Update the displayed count
-      
-      // Restart the timer for the next day
-      startTimerGPT3_5();
-    }, timeUntilMidnight);
-  }
-
-  function updateMessageCount(messageCount, modelType) {
-    console.log('...updateMessageCount...');
-    document.getElementById("messageCount").textContent = messageCount;
-    if (modelType === 'GPT-4') {
-      localStorage.setItem('modelGPT-4', messageCount); // Save the count in local storage
-    } else {
-      localStorage.setItem('modelGPT-3.5', messageCount); // Save the count in local storage
-    }
-  }
-
   function initTimerDom() {
-    console.log('...initTimerDom...');
+    const countID4 = document.getElementById('modelGPT-4');
+    const countID3 = document.getElementById('modelGPT-3');
+    if (countID4 || countID3) {
+        return;
+    }
     const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
     if (divElement) {
       const textNode = document.createTextNode("Total Messages Sent: ");
-      divElement.appendChild(textNode);
-      
       const spanElement = document.createElement("span");
-      spanElement.id = "messageCount";
-      spanElement.textContent = "0";
       
+      let messageCount = 0;
+      const modelType = divElement.textContent.substring(0, 32);
+      if (modelType === 'GPT-4Custom instructions details') {
+        if (countID4) {
+          return;
+        }
+
+        spanElement.id = "modelGPT-4";
+        messageCount = localStorage.getItem('modelGPT-4') || 0;
+      } else {
+        if (countID3) {
+          return;
+        }
+
+        spanElement.id = "modelGPT-3";
+        messageCount = localStorage.getItem('modelGPT-3') || 0;
+      }
+      spanElement.textContent = messageCount;
+
+      divElement.appendChild(textNode);
       divElement.appendChild(spanElement);
     }
   }
+
+  const submitButtonClass = '[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]';
+  // Initialize flags and counters
+  let timerStarted = { 'GPT-3': false, 'GPT-4': false };
+  let timers = {};
+
+  // Event Listeners
+  addEventListenerById('click', submitButtonClass, handleEvent);
+  let textarea = document.getElementById("prompt-textarea");
+  // Event listener for keyboard's Enter key
+  if (textarea) {
+    textarea.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        handleEvent();
+      }
+    }, {capture: true});
+  }
+
+  function addEventListenerById(eventType, selector, callback) {
+    let element = document.querySelector(selector);
+    if (element && !element.myEventListener) {
+      console.log('Click: ' + element.textContent);
+      element.addEventListener(eventType, callback);
+      element.myEventListener = true;
+    }
+  }
+
+  function handleEvent() {
+    const modelType = getModelType();
+    if (!modelType) return;
+
+    if (!timerStarted[modelType]) {
+      startTimer(modelType);
+    }
+
+    const messageCount = incrementMessageCount(modelType);
+    updateMessageCountDisplay(messageCount, modelType);
+  }
+
+  function getModelType() {
+    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+    const modelTypeName = divElement.textContent.substring(0, 32);
+    return modelTypeName === 'GPT-4Custom instructions details' ? 'GPT-4' : 'GPT-3';
+  }
+
+  function startTimer(modelType) {
+    timerStarted[modelType] = true;
+
+    const time = modelType === 'GPT-3' ? getTimeUntilMidnight() : 3 * 60 * 60 * 1000;
+    
+    timers[modelType] = setTimeout(() => {
+      resetMessageCount(modelType);
+    }, time);
+  }
+
+  function getTimeUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    return midnight - now;
+  }
+
+  function incrementMessageCount(modelType) {
+    let count = parseInt(localStorage.getItem(`model${modelType}`) || 0);
+    count++;
+    localStorage.setItem(`model${modelType}`, count);
+    return count;
+  }
+
+  function updateMessageCountDisplay(count, modelType) {
+    const countElement = document.getElementById(`model${modelType}`);
+    if (countElement) {
+      countElement.textContent = count;
+    }
+  }
+
+  function resetMessageCount(modelType) {
+    localStorage.setItem(`model${modelType}`, 0);
+    updateMessageCountDisplay(0, modelType);
+    timerStarted[modelType] = false;
+  }
+
+
+  // const observerCallback = (mutationsList, observer) => {
+  //   for (const mutation of mutationsList) {
+  //     if (mutation.type === 'childList') {
+  //       // Loop through all added nodes
+  //       for (const addedNode of mutation.addedNodes) {
+  //         if (addedNode.nodeType === Node.ELEMENT_NODE) {  // Filter out non-element nodes
+  //           console.log("Added element:", addedNode);
+  //         }
+  //       }
+  //     }
+  //   }
+  // };
+
+  // // Create a new observer instance with the callback
+  // const observer = new MutationObserver(observerCallback);
+
+  // // Options for the observer (which mutations to observe)
+  // const config = { childList: true, subtree: true };
+
+  // // Start observing a particular target node (in this case, the whole body)
+  // observer.observe(document.body, config);
+
+
 }
 
 

@@ -19,8 +19,8 @@ function init() {
           // Create the message object
           var message = {
             selected: selectButton,
-            cmd: cmdInput.value,
-            prompt: promptInput.value
+            cmd: cmdInput ? cmdInput.value: '',
+            prompt: promptInput ? promptInput.value: ''
           };
 
           cmdInput.value = '';

@@ -193,9 +193,7 @@ function initPrompt() {
         });
       }
     }
-
     
-    promptTextarea.removeEventListener('keydown', keyDown, {capture: true});
     promptTextarea.addEventListener('keydown', keyDown, {capture: true});
   }
 
