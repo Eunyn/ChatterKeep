@@ -16,7 +16,7 @@ function initExecute() {
 
       createCodeFile();
 
-      // initTimerDom();
+      initMessageCountDom();
     }, 3000);
 
 
@@ -102,8 +102,6 @@ function initExecute() {
     } else {
       localStorage.setItem('prompts-eng', JSON.stringify(prompts));
     }
-
-    // console.log(prompts);
   }
 
   function handleDeleteButtonClick(cmdInput) {
@@ -141,16 +139,12 @@ function initExecute() {
     } else {
       localStorage.setItem('prompts-eng', JSON.stringify(deleteData));
     }
-
-    // console.log(deleteData);
   }
-
 
   function containsChinese(text) {
     const chineseRegex = /[\u4e00-\u9fa5]/; // Regular expression to match Chinese characters
     return chineseRegex.test(text);
   }
-
 
   let fileName = 'conversation';
   function getCurrentConversationName() {
@@ -159,7 +153,6 @@ function initExecute() {
       fileName = currentConversationName.textContent;
     }
   }
-
 
   function saveQAndAAsPDF(questions, answers) {
     // Create a new jsPDF instance
@@ -243,7 +236,6 @@ function initExecute() {
     downloadFileByType('.txt', textContent);    
   }
 
-
   function downloadFileByType(type, content) {
     const link = document.createElement('a');
     link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`;
@@ -254,11 +246,10 @@ function initExecute() {
     document.body.removeChild(link);
   }
 
-
   function uploadFile() {
     const upload = document.createElement('input');
     upload.type = 'file';
-    upload.accept = '.txt, .pdf, .docx, .xlsx, .js, .py, .html, .css, .json, .c, .cpp, .java, .go, .rs, .php, .sql';
+    upload.accept = '.txt, .pdf, .docx, .xlsx, .xml, .js, .py, .html, .css, .json, .c, .cpp, .java, .go, .rs, .php, .sql, .jsp, .R, .cs, .ini, .properties, .swift';
 
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
@@ -294,46 +285,46 @@ function initExecute() {
 
   function uploadPDFFile(file, reader, currentConversationName) {
     reader.onload = async (event) => {
-        const typedarray = new Uint8Array(event.target.result);
+      const typedarray = new Uint8Array(event.target.result);
 
-        // Load the PDF using PDF.js
-        const pdf = await pdfjsLib.getDocument(typedarray).promise;
-        const numPages = pdf.numPages;
-        for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
-          if (currentConversationName != currentName) {
-            console.log('Conversation has been changed');
-            break;
-          }
-
-          let text = '';
-
-          const page = await pdf.getPage(pageNumber);
-          const textContent = await page.getTextContent();
-          const pageText = textContent.items.map(item => item.str).join(' ');
-
-          // Append page text to the overall text
-          text += `Page ${pageNumber}:\n${pageText}\n\n`;
-
-          await submitConversation(text, pageNumber, file.name);
-          
-          const submit = document.getElementById('prompt-textarea');
-          if (submit) {
-            submit.nextElementSibling.click();
-          }
-
-          let chatgptReady = false;
-          while (!chatgptReady) {
-            await new Promise((resolve) => setTimeout(resolve, 5000));
-            const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-            if (stopGenerating) {
-              chatgptReady = stopGenerating.textContent !== "Stop generating";
-            }
-          }
-
-          text = '';
+      // Load the PDF using PDF.js
+      const pdf = await pdfjsLib.getDocument(typedarray).promise;
+      const numPages = pdf.numPages;
+      for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
+        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+        if (currentConversationName != currentName) {
+          console.log('Conversation has been changed');
+          break;
         }
-      };
+
+        let text = '';
+
+        const page = await pdf.getPage(pageNumber);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(' ');
+
+        // Append page text to the overall text
+        text += `Page ${pageNumber}:\n${pageText}\n\n`;
+
+        await submitConversation(text, pageNumber, file.name);
+        
+        const submit = document.getElementById('prompt-textarea');
+        if (submit) {
+          submit.nextElementSibling.click();
+        }
+
+        let chatgptReady = false;
+        while (!chatgptReady) {
+          await new Promise((resolve) => setTimeout(resolve, 5000));
+          const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+          if (stopGenerating) {
+            chatgptReady = stopGenerating.textContent !== "Stop generating";
+          }
+        }
+
+        text = '';
+      }
+    };
 
     reader.readAsArrayBuffer(file);
   }
@@ -414,70 +405,70 @@ function initExecute() {
 
   function uploadExcelFile(file, reader, currentConversationName) {
     reader.onload = async (event) => {
-        let data = new Uint8Array(event.target.result);
-        let workbook = XLSX.read(data, {type: 'array'});
+      let data = new Uint8Array(event.target.result);
+      let workbook = XLSX.read(data, {type: 'array'});
 
-        const chunkSizeInBytes = setSizeByModel(); // adjust this as needed
+      const chunkSizeInBytes = setSizeByModel(); // adjust this as needed
 
-        // Function to split array into chunks
-        function chunkArray(myArray, chunk_size_in_bytes){
-            let results = [];
-            let chunk = [];
-            let chunkSize = 0;
-            for (const item of myArray) {
-                const itemSize = JSON.stringify(item).length * 2;
-                if (chunkSize + itemSize > chunk_size_in_bytes) {
-                    results.push(chunk);
-                    chunk = [item];
-                    chunkSize = itemSize;
-                } else {
-                    chunk.push(item);
-                    chunkSize += itemSize;
-                }
-            }
-            if (chunk.length > 0) {
-                results.push(chunk);
-            }
-            return results;
-        }
+      // Function to split array into chunks
+      function chunkArray(myArray, chunk_size_in_bytes){
+          let results = [];
+          let chunk = [];
+          let chunkSize = 0;
+          for (const item of myArray) {
+              const itemSize = JSON.stringify(item).length * 2;
+              if (chunkSize + itemSize > chunk_size_in_bytes) {
+                  results.push(chunk);
+                  chunk = [item];
+                  chunkSize = itemSize;
+              } else {
+                  chunk.push(item);
+                  chunkSize += itemSize;
+              }
+          }
+          if (chunk.length > 0) {
+              results.push(chunk);
+          }
+          return results;
+      }
 
-        // Iterate over each sheet
-        for (let sheetName of workbook.SheetNames) {
-            let worksheet = workbook.Sheets[sheetName];
-            let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+      // Iterate over each sheet
+      for (let sheetName of workbook.SheetNames) {
+          let worksheet = workbook.Sheets[sheetName];
+          let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
+          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+          if (currentConversationName != currentName) {
+            console.log('Conversation has been changed');
+            break;
+          }
+
+          // Split jsonData into chunks
+          let chunks = chunkArray(jsonData, chunkSizeInBytes);
+
+          for(let i = 0; i < chunks.length; i++) {
             const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
             if (currentConversationName != currentName) {
               console.log('Conversation has been changed');
               break;
             }
+            await submitConversation(chunks[i], i + 1, file.name);
 
-            // Split jsonData into chunks
-            let chunks = chunkArray(jsonData, chunkSizeInBytes);
+            const submit = document.getElementById('prompt-textarea');
+            if (submit) {
+                submit.nextElementSibling.click();
+            }
 
-            for(let i = 0; i < chunks.length; i++) {
-                const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
-                if (currentConversationName != currentName) {
-                  console.log('Conversation has been changed');
-                  break;
-                }
-                await submitConversation(chunks[i], i + 1, file.name);
-
-                const submit = document.getElementById('prompt-textarea');
-                if (submit) {
-                    submit.nextElementSibling.click();
-                }
-
-                let chatgptReady = false;
-                while (!chatgptReady) {
-                    await new Promise((resolve) => setTimeout(resolve, 5000));
-                    const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
-                    if (stopGenerating) {
-                      chatgptReady = stopGenerating.textContent !== "Stop generating";
-                    }
+            let chatgptReady = false;
+            while (!chatgptReady) {
+                await new Promise((resolve) => setTimeout(resolve, 5000));
+                const stopGenerating = document.querySelector('.btn.relative.btn-neutral.border-0.md\\:border');
+                if (stopGenerating) {
+                  chatgptReady = stopGenerating.textContent !== "Stop generating";
                 }
             }
         }
+      }
     };
 
     reader.readAsArrayBuffer(file);
@@ -621,15 +612,14 @@ function initExecute() {
           createCodeFile();
         }
 
-        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="group w-full text-token-text-primary border-b border-black/10 dark:border-gray-900/50 dark:bg-gray-800"]')) {
-          console.log('init dom#########');
-          initTimerDom();
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="group w-full text-token-text-primary border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]"]')) {
+          console.log('# Mointor the new answer');
+          handleEvent();
         }
 
-        // Monitor for the dynamically appearing button
+        // Monitor for the dynamically appearing button ===> Save & Submit
         if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="text-center mt-2 flex justify-center"]')) {
           const saveSButton = document.querySelector('[class="btn relative btn-primary mr-2"]');
-          console.log("Added element:", node);
           if (!saveSButton.myEventListener) { // Check if the event is already added
             saveSButton.addEventListener('click', handleEvent);
             saveSButton.myEventListener = true; // Flag that the event listener is added
@@ -645,7 +635,6 @@ function initExecute() {
     console.log("currentUrl: " + currentUrl);
     return currentUrl;
   }
-
 
   function getCodeBlockByAIType() {
     let currentUrl = window.location.href;
@@ -674,68 +663,55 @@ function initExecute() {
     }
   }
 
-
-  function initTimerDom() {
-    const countID4 = document.getElementById('modelGPT-4');
-    const countID3 = document.getElementById('modelGPT-3');
-    if (countID4 || countID3) {
-        return;
+  function initMessageCountDom() {
+    // Check if the elements already exist
+    if (document.getElementById('modelGPT-4') || document.getElementById('modelGPT-3')) {
+      return;
     }
+
     const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+    
     if (divElement) {
-      const textNode = document.createTextNode("Total Messages Sent: ");
       const spanElement = document.createElement("span");
+      const modelType = divElement.textContent.startsWith('GPT-4') ? 'GPT-4' : 'GPT-3';
+      spanElement.id = `model${modelType}`;
       
       let messageCount = 0;
-      const modelType = divElement.textContent.substring(0, 32);
-      if (modelType === 'GPT-4Custom instructions details') {
-        if (countID4) {
-          return;
+      
+      if (modelType === 'GPT-4') {
+        // Handle GPT-4 logic
+        const time = 3 * 60 * 60 * 1000;
+        const startTime = parseInt(Date.now());
+        const savedStartTime = localStorage.getItem(`modelStartTime-${modelType}`);
+        if (savedStartTime) {
+          const elapsedTime = startTime - savedStartTime;
+          const remainingTime = time - elapsedTime;
+          
+          if (remainingTime > 0) {
+            messageCount = localStorage.getItem(spanElement.id) || 0;
+          }
         }
-
-        spanElement.id = "modelGPT-4";
-        messageCount = localStorage.getItem('modelGPT-4') || 0;
       } else {
-        if (countID3) {
-          return;
+        // Handle GPT-3 logic
+        const now = new Date().getDate();
+        const start = parseInt(localStorage.getItem('modelTime'));
+        
+        if (start && now === start) {
+          messageCount = localStorage.getItem(spanElement.id) || 0;
         }
-
-        spanElement.id = "modelGPT-3";
-        messageCount = localStorage.getItem('modelGPT-3') || 0;
       }
+      
+      // Set the message count and append the elements
       spanElement.textContent = messageCount;
-
+      const textNode = document.createTextNode("Messages Sent: ");
       divElement.appendChild(textNode);
       divElement.appendChild(spanElement);
     }
   }
 
-  const submitButtonClass = '[class="absolute p-1 rounded-md md:bottom-3 md:p-2 md:right-3 dark:hover:bg-gray-900 dark:disabled:hover:bg-transparent right-2 disabled:text-gray-400 enabled:bg-brand-purple text-white bottom-1.5 transition-colors disabled:opacity-40"]';
   // Initialize flags and counters
   let timerStarted = { 'GPT-3': false, 'GPT-4': false };
   let timers = {};
-
-  // Event Listeners
-  addEventListenerById('click', submitButtonClass, handleEvent);
-  let textarea = document.getElementById("prompt-textarea");
-  // Event listener for keyboard's Enter key
-  if (textarea) {
-    textarea.addEventListener('keydown', function(event) {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        handleEvent();
-      }
-    }, {capture: true});
-  }
-
-  function addEventListenerById(eventType, selector, callback) {
-    let element = document.querySelector(selector);
-    if (element && !element.myEventListener) {
-      console.log('Click: ' + element.textContent);
-      element.addEventListener(eventType, callback);
-      element.myEventListener = true;
-    }
-  }
 
   function handleEvent() {
     const modelType = getModelType();
@@ -751,25 +727,51 @@ function initExecute() {
 
   function getModelType() {
     const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
-    const modelTypeName = divElement.textContent.substring(0, 32);
-    return modelTypeName === 'GPT-4Custom instructions details' ? 'GPT-4' : 'GPT-3';
+    return divElement.textContent.startsWith('GPT-4') ? 'GPT-4' : 'GPT-3';
   }
 
   function startTimer(modelType) {
     timerStarted[modelType] = true;
 
-    const time = modelType === 'GPT-3' ? getTimeUntilMidnight() : 3 * 60 * 60 * 1000;
-    
-    timers[modelType] = setTimeout(() => {
-      resetMessageCount(modelType);
-    }, time);
+    if (modelType === 'GPT-3') {
+      const now = parseInt(new Date().getDate());
+      let start = parseInt(localStorage.getItem('modelTime'));
+
+      if (!start || now !== start) {
+        localStorage.setItem(`model${modelType}`, 0);
+        updateMessageCountDisplay(0, modelType);
+        localStorage.setItem('modelTime', now);
+      }
+    } else {
+      dynamicUpdateMessageCount(modelType);
+    }
   }
 
-  function getTimeUntilMidnight() {
-    const now = new Date();
-    const midnight = new Date(now);
-    midnight.setHours(24, 0, 0, 0);
-    return midnight - now;
+  function dynamicUpdateMessageCount(modelType) {
+    const time = 3 * 60 * 60 * 1000;
+    const startTime = parseInt(new Date().getTime());
+    const savedStartTime = parseInt(localStorage.getItem(`modelStartTime-${modelType}`));
+
+    if (!savedStartTime) {
+      localStorage.setItem(`modelStartTime-${modelType}`, startTime);
+      timers[modelType] = setTimeout(() => {
+        resetMessageCount(modelType);
+      }, time);
+    } else {
+      const elapsedTime = startTime - savedStartTime;
+      const remainingTime = time - elapsedTime;
+      
+      if (remainingTime > 0) {
+        console.log('Not over three hours, continue the count');
+        // Restart the timer with the remaining time
+        timers[modelType] = setTimeout(() => {
+          resetMessageCount(modelType);
+        }, remainingTime);
+      } else {
+        console.log('Over three hours, restart the count');
+        resetMessageCount(modelType);
+      }
+    }
   }
 
   function incrementMessageCount(modelType) {
@@ -790,37 +792,18 @@ function initExecute() {
     localStorage.setItem(`model${modelType}`, 0);
     updateMessageCountDisplay(0, modelType);
     timerStarted[modelType] = false;
+    const startTime = parseInt(new Date().getTime());
+    localStorage.setItem(`modelStartTime-${modelType}`, startTime);
   }
 
-
-  // const observerCallback = (mutationsList, observer) => {
-  //   for (const mutation of mutationsList) {
-  //     if (mutation.type === 'childList') {
-  //       // Loop through all added nodes
-  //       for (const addedNode of mutation.addedNodes) {
-  //         if (addedNode.nodeType === Node.ELEMENT_NODE) {  // Filter out non-element nodes
-  //           console.log("Added element:", addedNode);
-  //         }
-  //       }
-  //     }
-  //   }
-  // };
-
-  // // Create a new observer instance with the callback
-  // const observer = new MutationObserver(observerCallback);
-
-  // // Options for the observer (which mutations to observe)
-  // const config = { childList: true, subtree: true };
-
-  // // Start observing a particular target node (in this case, the whole body)
-  // observer.observe(document.body, config);
-
-
 }
-
 
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   initExecute();
 } else {
   document.addEventListener('DOMContentLoaded', initExecute);
 }
+
+
+
+

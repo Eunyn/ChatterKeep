@@ -40,9 +40,7 @@ function init() {
       chrome.tabs.sendMessage(tabs[0].id, message);
     });
   }
-
 }
-
 
 
 if (document.readyState === 'complete' || document.readyState === 'interactive') {

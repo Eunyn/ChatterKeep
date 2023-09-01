@@ -33,7 +33,8 @@ function initPrompt() {
   async function promptsPrompt() {
     initPromptDOM();
     const promptTextarea = document.getElementById('prompt-textarea');
-    const targetElement = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
+    const targetElement = document.querySelector('.flex.items-center.md\\:items-end');
+    // const targetElement = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
     let promptsElement = document.querySelector('#suggestionBox');
     if (!promptsElement) {
       let promptsElement = document.createElement('div');
@@ -48,6 +49,7 @@ function initPrompt() {
       promptsElement.style.maxHeight = '200px';
       promptsElement.style.overflowY = 'auto';
       promptsElement.style.padding = '4px';
+      promptsElement.style.marginRight = '340px';
       promptsElement.style.display = 'none';
       //  Insert the div element above the target element
       if (targetElement) {
@@ -116,7 +118,7 @@ function initPrompt() {
         promptTextarea.removeEventListener('input', promptsShow);
         promptTextarea.addEventListener('input', promptsShow);
       } else {
-        console.log('not startsWith \'\/\' && \'\#\'');
+        console.log('Not StartsWith \'\/\' || \'\#\'');
       }
     }
 
@@ -141,7 +143,6 @@ function initPrompt() {
       return prompt;
     }
 
-    // let selectedIndex = -1;
     function keyDown(event) {
       if (!promptTextarea.value.startsWith("/") && !promptTextarea.value.startsWith("#")) {
         return;
