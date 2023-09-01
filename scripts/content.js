@@ -673,7 +673,7 @@ function initExecute() {
     
     if (divElement) {
       const spanElement = document.createElement("span");
-      const modelType = divElement.textContent.startsWith('GPT-4') ? 'GPT-4' : 'GPT-3';
+      const modelType = getModelType();
       spanElement.id = `model${modelType}`;
       
       let messageCount = 0;
@@ -727,7 +727,12 @@ function initExecute() {
 
   function getModelType() {
     const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
-    return divElement.textContent.startsWith('GPT-4') ? 'GPT-4' : 'GPT-3';
+    const model = divElement.textContent;
+    if (model.startsWith('GPT-4') || model.startsWith('Advanced Data Analysis') || model.startsWith('Plugins')) {
+      return 'GPT-4';
+    }
+
+    return 'GPT-3';
   }
 
   function startTimer(modelType) {
