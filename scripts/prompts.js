@@ -35,7 +35,7 @@ function initPrompt() {
     const promptTextarea = document.getElementById('prompt-textarea');
     let targetElement = document.querySelector('.flex.items-center.md\\:items-end');
     if (!targetElement) {
-      targetElement = document.querySelectorAll('.relative.flex.h-full.flex-1.items-stretch.md\\:flex-col')[12];
+      targetElement = document.querySelectorAll('.flex.w-full.items-center')[12];
     }
     // const targetElement = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
     let promptsElement = document.querySelector('#suggestionBox');
