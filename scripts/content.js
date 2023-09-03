@@ -681,16 +681,18 @@ function initExecute() {
       if (modelType === 'GPT-4') {
         // Handle GPT-4 logic
         const time = 3 * 60 * 60 * 1000;
-        const startTime = parseInt(Date.now());
+        const currentTime = parseInt(Date.now());
         const savedStartTime = localStorage.getItem(`modelStartTime-${modelType}`);
         if (savedStartTime) {
-          const elapsedTime = startTime - savedStartTime;
+          const elapsedTime = currentTime - savedStartTime;
           const remainingTime = time - elapsedTime;
           
           if (remainingTime > 0) {
             messageCount = localStorage.getItem(spanElement.id) || 0;
           }
         }
+
+        // spanElement.setAttribute('title', getLocalTime(savedStartTime));
       } else {
         // Handle GPT-3 logic
         const now = new Date().getDate();
@@ -754,16 +756,16 @@ function initExecute() {
 
   function dynamicUpdateMessageCount(modelType) {
     const time = 3 * 60 * 60 * 1000;
-    const startTime = parseInt(new Date().getTime());
+    const currentTime = parseInt(new Date().getTime());
     const savedStartTime = parseInt(localStorage.getItem(`modelStartTime-${modelType}`));
 
     if (!savedStartTime) {
-      localStorage.setItem(`modelStartTime-${modelType}`, startTime);
+      localStorage.setItem(`modelStartTime-${modelType}`, currentTime);
       timers[modelType] = setTimeout(() => {
         resetMessageCount(modelType);
       }, time);
     } else {
-      const elapsedTime = startTime - savedStartTime;
+      const elapsedTime = currentTime - savedStartTime;
       const remainingTime = time - elapsedTime;
       
       if (remainingTime > 0) {
@@ -775,6 +777,8 @@ function initExecute() {
       } else {
         console.log('Over three hours, restart the count');
         resetMessageCount(modelType);
+        const startTime = parseInt(new Date().getTime());
+        localStorage.setItem(`modelStartTime-${modelType}`, startTime);
       }
     }
   }
@@ -797,8 +801,17 @@ function initExecute() {
     localStorage.setItem(`model${modelType}`, 0);
     updateMessageCountDisplay(0, modelType);
     timerStarted[modelType] = false;
-    const startTime = parseInt(new Date().getTime());
-    localStorage.setItem(`modelStartTime-${modelType}`, startTime);
+    // const currentTime = parseInt(new Date().getTime());
+    // localStorage.setItem(`modelStartTime-${modelType}`, currentTime);
+  }
+
+  function getLocalTime(timestamp) {
+    // Create a new Date object using the timestamp
+    const dateObject = new Date(parseInt(timestamp));
+    // Convert the Date object to a local time string
+    const localTime = dateObject.toLocaleString();
+
+    return localTime.substring(9);
   }
 
 }
