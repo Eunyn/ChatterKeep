@@ -44,7 +44,7 @@ function initPrompt() {
       promptsElement.id = 'suggestionBox';
       promptsElement.style.top = '100%';
       promptsElement.style.left = '0';
-      promptsElement.style.width = '300px';
+      promptsElement.style.width = '350px';
       promptsElement.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
       promptsElement.style.color = 'white';
       promptsElement.style.fontFamily = 'Microsoft YaBlack';
