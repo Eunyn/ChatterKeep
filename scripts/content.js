@@ -629,38 +629,14 @@ function initExecute() {
     });
   }).observe(document.body, { childList: true, subtree: true });
 
-
-  function getCurrentUrl() {
-    let currentUrl = window.location.href;
-    console.log("currentUrl: " + currentUrl);
-    return currentUrl;
-  }
-
   function getCodeBlockByAIType() {
-    let currentUrl = window.location.href;
+    let domClass = {
+      codeBlock: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md',
+      codeType: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span',
+      code: '.p-4.overflow-y-auto code'
+    };
 
-    let regExOpenAI = /^https:\/\/chat\.openai\.com\//;
-    let regExClaude = /^https:\/\/claude\.ai\/chat\//;
-
-    if (regExOpenAI.test(currentUrl)) {
-      let domClass = {
-        codeBlock: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md',
-        codeType: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span',
-        code: '.p-4.overflow-y-auto code'
-      };
-
-      return domClass;
-    }
-
-    if (regExClaude.test(currentUrl)) {
-      let domClass = {
-        codeBlock: '.flex.justify-between.items-center.pt-1.pl-3',
-        codeType: '.text-\\[11px\\].text-stone-300',
-        code: 'code'
-      };
-
-      return domClass;
-    }
+    return domClass;
   }
 
   function initMessageCountDom() {
@@ -691,8 +667,6 @@ function initExecute() {
             messageCount = localStorage.getItem(spanElement.id) || 0;
           }
         }
-
-        // spanElement.setAttribute('title', getLocalTime(savedStartTime));
       } else {
         // Handle GPT-3 logic
         const now = new Date().getDate();
@@ -705,7 +679,7 @@ function initExecute() {
       
       // Set the message count and append the elements
       spanElement.textContent = messageCount;
-      const textNode = document.createTextNode("Messages Sent: ");
+      const textNode = document.createTextNode("Total Messages Sent: ");
       divElement.appendChild(textNode);
       divElement.appendChild(spanElement);
     }
@@ -801,17 +775,6 @@ function initExecute() {
     localStorage.setItem(`model${modelType}`, 0);
     updateMessageCountDisplay(0, modelType);
     timerStarted[modelType] = false;
-    // const currentTime = parseInt(new Date().getTime());
-    // localStorage.setItem(`modelStartTime-${modelType}`, currentTime);
-  }
-
-  function getLocalTime(timestamp) {
-    // Create a new Date object using the timestamp
-    const dateObject = new Date(parseInt(timestamp));
-    // Convert the Date object to a local time string
-    const localTime = dateObject.toLocaleString();
-
-    return localTime.substring(9);
   }
 
 }

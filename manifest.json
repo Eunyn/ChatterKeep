@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "ChatterKeep",
   "author": "Eun",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "An extension that includes functions such as offering Chinese and English prompts, downloading conversations, and uploading files.",
   "permissions": [
     "activeTab"
