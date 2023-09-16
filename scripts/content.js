@@ -148,7 +148,7 @@ function initExecute() {
 
   let fileName = 'conversation';
   function getCurrentConversationName() {
-    const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+    const currentConversationName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
     if (currentConversationName) {
       fileName = currentConversationName.textContent;
     }
@@ -254,7 +254,7 @@ function initExecute() {
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-      const currentConversationName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+      const currentConversationName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
       if (file.type === 'application/pdf') {
@@ -291,7 +291,7 @@ function initExecute() {
       const pdf = await pdfjsLib.getDocument(typedarray).promise;
       const numPages = pdf.numPages;
       for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+        const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
         if (currentConversationName != currentName) {
           console.log('Conversation has been changed');
           break;
@@ -372,7 +372,7 @@ function initExecute() {
       }
 
       for (let i = 0; i < chunks.length; i++) {
-        const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+        const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
         if (currentConversationName != currentName) {
           console.log('Conversation has been changed');
           break;
@@ -437,7 +437,7 @@ function initExecute() {
           let worksheet = workbook.Sheets[sheetName];
           let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
-          const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+          const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
           if (currentConversationName != currentName) {
             console.log('Conversation has been changed');
             break;
@@ -447,7 +447,7 @@ function initExecute() {
           let chunks = chunkArray(jsonData, chunkSizeInBytes);
 
           for(let i = 0; i < chunks.length; i++) {
-            const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+            const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
             if (currentConversationName != currentName) {
               console.log('Conversation has been changed');
               break;
@@ -481,7 +481,7 @@ function initExecute() {
     let part = 1;
 
     while (offset < file.size) {
-      const currentName = document.querySelector('[class="flex py-3 px-3 items-center gap-3 relative rounded-md cursor-pointer break-all bg-gray-800 pr-14 hover:bg-gray-800 group"]');
+      const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
       if (currentConversationName != currentName) {
         console.log('Conversation has been changed');
         break;
