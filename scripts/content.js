@@ -150,7 +150,7 @@ function initExecute() {
   function getCurrentConversationName() {
     const currentConversationName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
     if (currentConversationName) {
-      fileName = currentConversationName.textContent;
+      fileName = currentConversationName.parentElement.textContent;
     }
   }
 
@@ -292,7 +292,7 @@ function initExecute() {
       const numPages = pdf.numPages;
       for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
         const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
-        if (currentConversationName != currentName) {
+        if (currentConversationName != currentName.parentElement.textContent) {
           console.log('Conversation has been changed');
           break;
         }
@@ -373,7 +373,7 @@ function initExecute() {
 
       for (let i = 0; i < chunks.length; i++) {
         const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
-        if (currentConversationName != currentName) {
+        if (currentConversationName != currentName.parentElement.textContent) {
           console.log('Conversation has been changed');
           break;
         }
@@ -438,7 +438,7 @@ function initExecute() {
           let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
           const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
-          if (currentConversationName != currentName) {
+          if (currentConversationName != currentName.parentElement.textContent) {
             console.log('Conversation has been changed');
             break;
           }
@@ -448,7 +448,7 @@ function initExecute() {
 
           for(let i = 0; i < chunks.length; i++) {
             const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
-            if (currentConversationName != currentName) {
+            if (currentConversationName != currentName.parentElement.textContent) {
               console.log('Conversation has been changed');
               break;
             }
@@ -482,7 +482,7 @@ function initExecute() {
 
     while (offset < file.size) {
       const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
-      if (currentConversationName != currentName) {
+      if (currentConversationName != currentName.parentElement.textContent) {
         console.log('Conversation has been changed');
         break;
       }
