@@ -6,13 +6,15 @@ function initExecute() {
 
   function execute() {
     getCurrentConversationName();
-    var questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
-    var answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
+    // var questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
+    // var answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
+    var contentsQA = document.querySelectorAll('[class="flex flex-grow flex-col max-w-full gap-3 gizmo:gap-0"]');
 
     setInterval(() => {
       getCurrentConversationName();
-      questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
-      answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
+      // questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
+      // answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
+      contentsQA = document.querySelectorAll('[class="flex flex-grow flex-col max-w-full gap-3 gizmo:gap-0"]');
 
       createCodeFile();
 
@@ -34,17 +36,20 @@ function initExecute() {
       } else if (message.selected === 'pdfDown') {
 
         console.log('saveQAndAAsPDF');
-        saveQAndAAsPDF(questions, answers);
+        // saveQAndAAsPDF(questions, answers);
+        saveQAndAAsPDF(contentsQA);
 
       } else if (message.selected === 'markDown') {
 
         console.log('saveQAndAAsMarkdown');
-        saveQAndAAsMarkdown(questions, answers);
+        // saveQAndAAsMarkdown(questions, answers);
+        saveQAndAAsMarkdown(contentsQA);
 
       } else if (message.selected === 'textDown') {
 
         console.log('saveQAndAAsText');
-        saveQAndAAsText(questions, answers);
+        // saveQAndAAsText(questions, answers);
+        saveQAndAAsText(contentsQA);
 
       } else if (message.selected === 'uploadFile') {
 
@@ -148,13 +153,13 @@ function initExecute() {
 
   let fileName = 'conversation';
   function getCurrentConversationName() {
-    const currentConversationName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+    const currentConversationName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
     if (currentConversationName) {
-      fileName = currentConversationName.parentElement.textContent;
+      fileName = currentConversationName.textContent;
     }
   }
 
-  function saveQAndAAsPDF(questions, answers) {
+  function saveQAndAAsPDF(contentsQA) {
     // Create a new jsPDF instance
     const doc = new window.jspdf.jsPDF();
     const fontPath = './fonts/simsunb.ttf';
@@ -164,14 +169,14 @@ function initExecute() {
     doc.setFont('simsunb');
 
     let y = 10;
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i].textContent.trim();
-      const answer = answers[i].textContent.trim();
+    for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
+      const question = contentsQA[i - 1].textContent.trim();
+      const answer = contentsQA[i].textContent.trim();
 
       // convert the question content
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
       const questionsLines = doc.splitTextToSize(questionWithoutPageNumber, 185);
-      doc.text(10, y, `Q${i + 1}: ${questionsLines[0]}`);
+      doc.text(10, y, `Q${j}: ${questionsLines[0]}`);
       y += 6;
       for (let j = 1; j < questionsLines.length; j++) {
         if (y + 10 > doc.internal.pageSize.getHeight()) {
@@ -203,15 +208,15 @@ function initExecute() {
 
 
 
-  function saveQAndAAsMarkdown(questions, answers) {
+  function saveQAndAAsMarkdown(contentsQA) {
     let markdownContent = '';
 
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i].textContent.trim();
-      const answer = answers[i].textContent.trim();
+    for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
+      const question = contentsQA[i - 1].textContent.trim();
+      const answer = contentsQA[i].textContent.trim();
 
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
-      markdownContent += `**Q${i + 1}:** ${questionWithoutPageNumber}\n\n`;
+      markdownContent += `**Q${j}:** ${questionWithoutPageNumber}\n\n`;
       markdownContent += '```markdown\n';
       markdownContent += `${answer}\n`;
       markdownContent += '```\n\n';
@@ -221,15 +226,15 @@ function initExecute() {
   }
 
 
-  function saveQAndAAsText(questions, answers) {
+  function saveQAndAAsText(contentsQA) {
     let textContent = '';
 
-    for (let i = 0; i < questions.length; i++) {
-      const question = questions[i].textContent;
-      const answer = answers[i].textContent;
+    for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
+      const question = contentsQA[i - 1].textContent;
+      const answer = contentsQA[i].textContent;
 
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
-      textContent += `Q${i + 1}: ${questionWithoutPageNumber}\n`;
+      textContent += `Q${j}: ${questionWithoutPageNumber}\n`;
       textContent += `A: ${answer}\n\n`;
     }
 
@@ -254,7 +259,7 @@ function initExecute() {
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-      const currentConversationName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+      const currentConversationName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
       if (file.type === 'application/pdf') {
@@ -291,7 +296,7 @@ function initExecute() {
       const pdf = await pdfjsLib.getDocument(typedarray).promise;
       const numPages = pdf.numPages;
       for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-        const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+        const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
         if (currentConversationName != currentName.parentElement.textContent) {
           console.log('Conversation has been changed');
           break;
@@ -372,7 +377,7 @@ function initExecute() {
       }
 
       for (let i = 0; i < chunks.length; i++) {
-        const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+        const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
         if (currentConversationName != currentName.parentElement.textContent) {
           console.log('Conversation has been changed');
           break;
@@ -437,7 +442,7 @@ function initExecute() {
           let worksheet = workbook.Sheets[sheetName];
           let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
-          const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+          const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
           if (currentConversationName != currentName.parentElement.textContent) {
             console.log('Conversation has been changed');
             break;
@@ -447,7 +452,7 @@ function initExecute() {
           let chunks = chunkArray(jsonData, chunkSizeInBytes);
 
           for(let i = 0; i < chunks.length; i++) {
-            const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+            const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
             if (currentConversationName != currentName.parentElement.textContent) {
               console.log('Conversation has been changed');
               break;
@@ -481,7 +486,7 @@ function initExecute() {
     let part = 1;
 
     while (offset < file.size) {
-      const currentName = document.querySelector('[class="absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l dark:from-gray-800 from-gray-100"]');
+      const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
       if (currentConversationName != currentName.parentElement.textContent) {
         console.log('Conversation has been changed');
         break;
@@ -612,7 +617,7 @@ function initExecute() {
           createCodeFile();
         }
 
-        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="group w-full text-token-text-primary border-b border-black/10 dark:border-gray-900/50 bg-gray-50 dark:bg-[#444654]"]')) {
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="w-full text-token-text-primary border-b border-black/10 gizmo:border-0 dark:border-gray-900/50 gizmo:dark:border-0 bg-gray-50 gizmo:bg-transparent dark:bg-[#444654] gizmo:dark:bg-transparent"]')) {
           console.log('# Mointor the new answer');
           handleEvent();
         }
@@ -645,7 +650,7 @@ function initExecute() {
       return;
     }
 
-    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+    const divElement = document.querySelector('[class="flex items-center gap-2"]');
     
     if (divElement) {
       const spanElement = document.createElement("span");
@@ -702,13 +707,13 @@ function initExecute() {
   }
 
   function getModelType() {
-    const divElement = document.querySelector('.flex.flex-1.flex-grow.items-center.gap-1.p-1.text-gray-600.dark\\:text-gray-200.sm\\:justify-center.sm\\:p-0');
+    const divElement = document.querySelector('[class="flex items-center gap-2"]');
     const model = divElement.textContent;
-    if (model.startsWith('GPT-4') || model.startsWith('Advanced Data Analysis') || model.startsWith('Plugins')) {
-      return 'GPT-4';
+    if (model.startsWith('ChatGPT 3.5')) {
+      return 'GPT-3';
     }
 
-    return 'GPT-3';
+    return 'GPT-4';
   }
 
   function startTimer(modelType) {
@@ -784,7 +789,3 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 } else {
   document.addEventListener('DOMContentLoaded', initExecute);
 }
-
-
-
-
