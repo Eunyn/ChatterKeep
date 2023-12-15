@@ -312,7 +312,7 @@ function initExecute() {
       const numPages = pdf.numPages;
       for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
         const currentName = getCurrentConversationName();
-        if (currentConversationName !== currentName) {
+        if (currentConversationName !== currentName && currentName !== fileName) {
           console.log('Conversation has been changed');
           break;
         }
@@ -392,8 +392,8 @@ function initExecute() {
       }
 
       for (let i = 0; i < chunks.length; i++) {
-        const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-        if (currentConversationName != currentName.parentElement.textContent) {
+        const currentName = getCurrentConversationName();
+        if (currentConversationName != currentName && currentName !== fileName) {
           console.log('Conversation has been changed');
           break;
         }
@@ -457,8 +457,8 @@ function initExecute() {
           let worksheet = workbook.Sheets[sheetName];
           let jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
 
-          const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-          if (currentConversationName != currentName.parentElement.textContent) {
+          const currentName = getCurrentConversationName();
+          if (currentConversationName !== currentName && currentName !== fileName) {
             console.log('Conversation has been changed');
             break;
           }
@@ -467,8 +467,8 @@ function initExecute() {
           let chunks = chunkArray(jsonData, chunkSizeInBytes);
 
           for(let i = 0; i < chunks.length; i++) {
-            const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-            if (currentConversationName != currentName.parentElement.textContent) {
+            const currentName = getCurrentConversationName();
+            if (currentConversationName !== currentName && currentName !== fileName) {
               console.log('Conversation has been changed');
               break;
             }
@@ -501,8 +501,8 @@ function initExecute() {
     let part = 1;
 
     while (offset < file.size) {
-      const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-      if (currentConversationName != currentName.parentElement.textContent) {
+      const currentName = getCurrentConversationName();
+      if (currentConversationName !== currentName && currentName !== fileName) {
         console.log('Conversation has been changed');
         break;
       }
