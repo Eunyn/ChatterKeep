@@ -33,12 +33,9 @@ function initPrompt() {
   async function promptsPrompt() {
     initPromptDOM();
     const promptTextarea = document.getElementById('prompt-textarea');
-    let targetElement = document.querySelector('.flex.items-center.md\\:items-end');
-    if (!targetElement) {
-      targetElement = document.querySelectorAll('.flex.w-full.items-center')[12];
-    }
-    // const targetElement = document.querySelector(".flex.flex-col.w-full.py-\\[10px\\].flex-grow.md\\:py-4.md\\:pl-4.relative.border.border-black\\/10.bg-white.dark\\:border-gray-900\\/50.dark\\:text-white.dark\\:bg-gray-700.rounded-xl.shadow-xs.dark\\:shadow-xs");
+    let targetElement = document.querySelector('#prompt-textarea').parentNode.parentNode;
     let promptsElement = document.querySelector('#suggestionBox');
+
     if (!promptsElement) {
       let promptsElement = document.createElement('div');
       promptsElement.id = 'suggestionBox';
@@ -54,6 +51,7 @@ function initPrompt() {
       promptsElement.style.padding = '4px';
       promptsElement.style.marginRight = '340px';
       promptsElement.style.display = 'none';
+
       //  Insert the div element above the target element
       if (targetElement) {
         targetElement.parentNode.insertBefore(promptsElement, targetElement);
@@ -78,7 +76,6 @@ function initPrompt() {
         } else {
           matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
         }
-        // const matchingItems = shortlistItems.filter(item => item.toLowerCase().startsWith(input));
 
         if (input && matchingItems.length > 0) {
           promptsElement.innerHTML = '';

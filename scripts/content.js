@@ -2,19 +2,17 @@
 
 function initExecute() {
 
+  let fileName = 'conversation';
+
   execute();
 
   function execute() {
-    getCurrentConversationName();
-    // var questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
-    // var answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
-    var contentsQA = document.querySelectorAll('[class="flex flex-grow flex-col max-w-full gap-3 gizmo:gap-0"]');
+    fileName = getCurrentConversationName();
+    let contentsQA = document.querySelectorAll('[class="w-full text-token-text-primary"]');
 
     setInterval(() => {
-      getCurrentConversationName();
-      // questions = document.querySelectorAll('.group.w-full.text-token-text-primary.border-b.border-black\\/10.dark\\:border-gray-900\\/50.dark\\:bg-gray-800');
-      // answers = document.querySelectorAll('.markdown.prose.w-full.break-words.dark\\:prose-invert.light');
-      contentsQA = document.querySelectorAll('[class="flex flex-grow flex-col max-w-full gap-3 gizmo:gap-0"]');
+      fileName = getCurrentConversationName();
+      contentsQA = document.querySelectorAll('[class="w-full text-token-text-primary"]');
 
       createCodeFile();
 
@@ -36,19 +34,16 @@ function initExecute() {
       } else if (message.selected === 'pdfDown') {
 
         console.log('saveQAndAAsPDF');
-        // saveQAndAAsPDF(questions, answers);
         saveQAndAAsPDF(contentsQA);
 
       } else if (message.selected === 'markDown') {
 
         console.log('saveQAndAAsMarkdown');
-        // saveQAndAAsMarkdown(questions, answers);
         saveQAndAAsMarkdown(contentsQA);
 
       } else if (message.selected === 'textDown') {
 
         console.log('saveQAndAAsText');
-        // saveQAndAAsText(questions, answers);
         saveQAndAAsText(contentsQA);
 
       } else if (message.selected === 'uploadFile') {
@@ -92,7 +87,6 @@ function initExecute() {
 
     if (index !== -1) {
       prompts.splice(index, 1);
-      // return;
     }
     
     var newEntry = {
@@ -151,12 +145,34 @@ function initExecute() {
     return chineseRegex.test(text);
   }
 
-  let fileName = 'conversation';
+  
   function getCurrentConversationName() {
-    const currentConversationName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-    if (currentConversationName) {
-      fileName = currentConversationName.textContent;
+    const nav = document.querySelector('nav');
+    if (nav == null) {
+      return fileName;
     }
+    const chatList = nav.querySelectorAll('li');
+    if (chatList == null) {
+      return fileName;
+    }
+    const list = [];
+    for (const chat of chatList) {
+      const c = chat.querySelector('a');
+      if (c) {
+        const name = {href: c['href'], chatName: c.textContent};
+        list.push(name);
+      }
+    }
+
+    const href = window.location.href;
+    for (const li of list) {
+      if (li.href === href) {
+        fileName = li.chatName;
+        break;
+      }
+    }
+
+    return fileName;
   }
 
   function saveQAndAAsPDF(contentsQA) {
@@ -170,8 +186,8 @@ function initExecute() {
 
     let y = 10;
     for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
-      const question = contentsQA[i - 1].textContent.trim();
-      const answer = contentsQA[i].textContent.trim();
+      const question = contentsQA[i - 1].textContent.trim().replace('You', '');
+      const answer = contentsQA[i].textContent.trim().replace('ChatGPTChatGPT', '');
 
       // convert the question content
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
@@ -207,13 +223,12 @@ function initExecute() {
   }
 
 
-
   function saveQAndAAsMarkdown(contentsQA) {
     let markdownContent = '';
 
     for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
-      const question = contentsQA[i - 1].textContent.trim();
-      const answer = contentsQA[i].textContent.trim();
+      const question = contentsQA[i - 1].textContent.trim().replace('You', '');
+      const answer = contentsQA[i].textContent.trim().replace('ChatGPTChatGPT', '');
 
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
       markdownContent += `**Q${j}:** ${questionWithoutPageNumber}\n\n`;
@@ -230,8 +245,8 @@ function initExecute() {
     let textContent = '';
 
     for (let i = 1, j = 1; i < contentsQA.length; i += 2, j++) {
-      const question = contentsQA[i - 1].textContent;
-      const answer = contentsQA[i].textContent;
+      const question = contentsQA[i - 1].textContent.trim().replace('You', '');
+      const answer = contentsQA[i].textContent.trim().replace('ChatGPTChatGPT', '');
 
       const questionWithoutPageNumber = question.replace(/^\d+ \/ \d+/, '');
       textContent += `Q${j}: ${questionWithoutPageNumber}\n`;
@@ -259,7 +274,7 @@ function initExecute() {
     upload.addEventListener('change', async (event) => {
       const file = event.target.files[0];
       const reader = new FileReader();
-      const currentConversationName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
+      const currentConversationName = getCurrentConversationName();
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.5.207/pdf.worker.min.js';
 
       if (file.type === 'application/pdf') {
@@ -296,8 +311,8 @@ function initExecute() {
       const pdf = await pdfjsLib.getDocument(typedarray).promise;
       const numPages = pdf.numPages;
       for (let pageNumber = 1; pageNumber <= numPages; pageNumber++) {
-        const currentName = document.querySelector('[class="relative grow overflow-hidden whitespace-nowrap"]');
-        if (currentConversationName != currentName.parentElement.textContent) {
+        const currentName = getCurrentConversationName();
+        if (currentConversationName !== currentName) {
           console.log('Conversation has been changed');
           break;
         }
@@ -337,8 +352,8 @@ function initExecute() {
 
   function setSizeByModel() {
     var chunkSize = 1024;
-    const modelType = document.querySelector('[class="relative z-20 flex flex-wrap items-center justify-center gap-1 border-b border-black/10 bg-gray-50 p-3 text-gray-500 dark:border-gray-900/50 dark:bg-gray-700 dark:text-gray-300"]');
-    if (modelType && modelType.textContent === 'Model: GPT-4') {
+    const modelType = getModelType();
+    if (modelType && modelType.textContent === 'GPT-4') {
       chunkSize = chunkSize * 4;
     } else {
       chunkSize = chunkSize * 10;
@@ -608,18 +623,23 @@ function initExecute() {
     });
   }
 
-
+  let detectChanged = 1;
   new MutationObserver((mutationsList) => {
     mutationsList.forEach((mutation) => {
+
       mutation.addedNodes.forEach((node) => {
         let domClass = getCodeBlockByAIType();
         if ( node.nodeType === Node.ELEMENT_NODE && node.matches(domClass.codeBlock)) {
           createCodeFile();
         }
 
-        if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="w-full text-token-text-primary border-b border-black/10 gizmo:border-0 dark:border-gray-900/50 gizmo:dark:border-0 bg-gray-50 gizmo:bg-transparent dark:bg-[#444654] gizmo:dark:bg-transparent"]')) {
-          console.log('# Mointor the new answer');
-          handleEvent();
+        
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches('.w-full.text-token-text-primary')) {
+          console.log('Changed: ' + node.classList);
+          if ((detectChanged & 1) === 1) {
+            handleEvent();
+          }
+          detectChanged++;
         }
 
         // Monitor for the dynamically appearing button ===> Save & Submit
@@ -633,6 +653,8 @@ function initExecute() {
       });
     });
   }).observe(document.body, { childList: true, subtree: true });
+
+
 
   function getCodeBlockByAIType() {
     let domClass = {
@@ -650,13 +672,15 @@ function initExecute() {
       return;
     }
 
-    const divElement = document.querySelector('[class="flex items-center gap-2"]');
+    const divElement = document.querySelector('#prompt-textarea');
     
     if (divElement) {
       const spanElement = document.createElement("span");
       const modelType = getModelType();
       spanElement.id = `model${modelType}`;
-      
+      spanElement.style.color = '#1b6d85';
+      spanElement.style.fontFamily = 'Microsoft YaBlack';
+
       let messageCount = 0;
       
       if (modelType === 'GPT-4') {
@@ -684,9 +708,17 @@ function initExecute() {
       
       // Set the message count and append the elements
       spanElement.textContent = messageCount;
-      const textNode = document.createTextNode("Total Messages Sent: ");
-      divElement.appendChild(textNode);
-      divElement.appendChild(spanElement);
+      const sentNode = document.createElement("div");
+      sentNode.id = "sentCount";
+      sentNode.style.color= "#1b6d85";
+      sentNode.style.fontFamily = 'Microsoft YaBlack';
+      sentNode.textContent= "Sent: ";
+      sentNode.style.marginLeft = '10px';
+      sentNode.style.marginRight = '3px';
+      sentNode.setAttribute('title', "Total messages sent");
+
+      divElement.parentNode.parentNode.appendChild(sentNode);
+      divElement.parentNode.parentNode.appendChild(spanElement);
     }
   }
 
@@ -707,9 +739,15 @@ function initExecute() {
   }
 
   function getModelType() {
-    const divElement = document.querySelector('[class="flex items-center gap-2"]');
+    const divElement = document.querySelector('[class="text-token-text-secondary"]');
+    if (divElement == null) {
+      return "GPT-3";
+    }
+
     const model = divElement.textContent;
-    if (model.startsWith('ChatGPT 3.5')) {
+    if (model === '3.5') {
+      console.log("The selected modelType is " + model);
+
       return 'GPT-3';
     }
 
@@ -781,7 +819,6 @@ function initExecute() {
     updateMessageCountDisplay(0, modelType);
     timerStarted[modelType] = false;
   }
-
 }
 
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
