@@ -2,8 +2,8 @@
   "manifest_version": 3,
   "name": "ChatterKeep",
   "author": "Eun",
-  "version": "2.4.1",
-  "description": "An extension that includes functions such as offering Chinese and English prompts, downloading conversations, and uploading files.",
+  "version": "2.4.6",
+  "description": "Offering hundreds of Chinese and English prompts, downloading conversations, and uploading files.",
   "permissions": [
     "activeTab"
   ],
@@ -14,10 +14,14 @@
         "./scripts/tools/xlsx.full.min.js",
         "./scripts/tools/mammoth.browser.min.js",
         "./scripts/tools/pdf.min.js",
-        "./scripts/tools/simhei-normal.js", 
+        "./scripts/tools/simsunb-normal.js", 
         "./scripts/tools/jspdf.umd.min.js", 
         "./scripts/prompts/prompts-eng.js",
         "./scripts/prompts/prompts-zh.js",
+        "./scripts/tools/bootstrap.bundle.min.js",
+        "./scripts/tools/modalCSS.js",
+        "./scripts/tools/chart.js",
+        "./scripts/modal.js",
         "./scripts/popup.js",
         "./scripts/prompts.js", 
         "./scripts/content.js"
