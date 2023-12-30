@@ -5,7 +5,7 @@ ChatterKeep is a powerful extension for ChatGPT that enhances your experience an
 
 
 
-[中文](https://github.com/Eunyn/ChatterKeep/blob/main/fonts/README.md)
+[中文](https://github.com/Eunyn/ChatterKeep/blob/main/doc/README.md)
 
 ## Features
 
@@ -87,7 +87,7 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
   
 - Chart Show:
-
+   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/chart.png" alt="chart" style="zoom:30%;" />
 ## Contributing
 
 Contributions to the ChatterKeep Plugin are welcome! If you find any issues or have suggestions for improvement, feel free to open an issue or submit a pull request. Contributions that enhance the functionality or usability of the plugin are especially appreciated.
