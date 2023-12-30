@@ -84,9 +84,8 @@ ChatterKeep 是一个强大的 ChatGPT 扩展，借助 ChatterKeep，您可以�
   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
   
 - Chart Show:
-
+   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/chart.png" alt="chart" style="zoom:30%;" />
   
-
 ## 贡献
 
 欢迎为 ChatterKeep 插件做出贡献！如果您发现任何问题或有改进建议，请随时打开问题或提交拉取请求。特别欢迎能够增强插件功能或可用性的贡献。
