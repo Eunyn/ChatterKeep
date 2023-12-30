@@ -10,35 +10,48 @@
     <style type="text/css">
       body {
         width: 400px;
-        height: 255px;
+        height: 256px;
+        font-family:"Times New Roman", serif;
+        background-color: #F8F8F8;
+      }
+      label {
+        font-style: italic;
+      }
+      #cmdInput, #promptInput:lang(en) {
+        font-family:"Times New Roman", serif;
+        background-color: #F0F0F0;
+      }
+      #cmdInput, #promptInput:lang(zh) {
+        font-family:"宋体", sans-serif;
+        background-color: #F0F0F0;
       }
     </style>
+    <script src="./scripts/tools/modalCSS.js"></script>
     <script src="./scripts/modal.js"></script>
     <script src="./scripts/popup.js"></script>
     <script src="./scripts/content.js"></script>
-    <script src="./scripts/promptDatas.js"></script>
+    <script src="./scripts/prompts.js"></script>
   </head>
 
   <body class="p-3 m-0 border-0 bd-example">
     <form class="">
         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-          <button type="button" class="btn btn-danger" id="pdfDown" title="Download as pdf file">PDF</button>
           <button type="button" class="btn btn-warning" id="markDown" title="Download as markdown file">Markdown</button>
-          <button type="button" class="btn btn-success" id="textDown" title="Download as text file">Text</button>
-          <button type="button" class="btn btn-danger" id="uploadFile" title="Upload file">Upload</button>
+          <button type="button" class="btn btn-success" id="textDown" title="Download as text file" style="width: 80px">Text</button>
+          <button type="button" class="btn btn-info" id="uploadFile" title="Upload file" style="width: 80px">Upload</button>
         </div>
-        <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 3px;">
-          <button type="button" class="btn btn-primary" id="addPrompt" title="Add prompt">Add</button>
-          <button type="button" class="btn btn-primary" id="deletePrompt" title="Delete prompt">Delete</button>
+        <div class="btn-group" role="group" aria-label="Basic example" style="margin-top: 3px; margin-bottom: 2px;">
+          <button type="button" class="btn btn-primary" id="addPrompt" title="Add prompt" style="width: 80px">Add</button>
+          <button type="button" class="btn btn-danger" id="deletePrompt" title="Delete prompt" style="width: 80px">Delete</button>
         </div>
 
         <div class="form-floating">
-          <input type="text" class="form-control" id="floatingText" placeholder="text" title="English: '/cmd', Chinese: '#cmd'">
-          <label for="floatingText" >cmd</label>
+          <input type="text" class="form-control" id="cmdInput" placeholder="cmd" title="English: '/cmd', Chinese: '#cmd'">
+          <label for="cmdInput" >cmd</label>
         </div>
         <div class="form-floating">
-          <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-          <label for="floatingTextarea2">prompt</label>
+          <textarea class="form-control" placeholder="Leave a prompt here" id="promptInput" style="height: 100px;"></textarea>
+          <label for="promptInput">prompt</label>
         </div>
     </form>
   </body>

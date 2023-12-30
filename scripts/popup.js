@@ -8,23 +8,28 @@ function init() {
     if (query) {
       query.forEach(btn => {
         btn.addEventListener('click', function (event) {
-          var targetcheckButtonClick = event.target;
-          var selectButton = targetcheckButtonClick.id;
+          const targetcheckButtonClick = event.target;
+          const selectButton = targetcheckButtonClick.id;
 
-          const cmdInput = document.getElementById('floatingText');
-          const promptInput = document.getElementById('floatingTextarea2');
-
-          console.log('send: ' + selectButton);
+          const cmdInput = document.getElementById('cmdInput');
+          const promptInput = document.getElementById('promptInput');
 
           // Create the message object
-          var message = {
+          const message = {
             selected: selectButton,
             cmd: cmdInput ? cmdInput.value: '',
             prompt: promptInput ? promptInput.value: ''
           };
 
-          cmdInput.value = '';
-          promptInput.value = '';
+          if (cmdInput) {
+            cmdInput.value = '';
+          }
+          if (promptInput) {
+            promptInput.value = '';
+          }
+          if (message.selected == null || message.cmd == null) {
+            return
+          }
 
           // Send the message to the injected page
           sendMessageToContentScript(message);

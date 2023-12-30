@@ -9,10 +9,11 @@ ChatterKeep is a powerful extension for ChatGPT that enhances your experience an
 
 ## Features
 
-- Export conversations with ChatGPT in `PDF`, `Markdown`, and `Text` formats.
+- Export conversations with ChatGPT in `Markdown`, and `Text` formats.
 - Upload files into the ChatGPT input box for easy population of content. Supports the following file formats: `.txt`, `.js`, `.py`, `.html`, `.css`, `.json`, `.csv`.
 - Allowing you to create a code file that ChatGPT generates.
 -  Provides a set of predefined command prompts to enhance your interaction with ChatGPT.
+-  ChatterKeep presents a graphical representation of your daily message count. 
 
 ## Installation
 
@@ -37,8 +38,8 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 1. Exporting Conversations:
    - Open the ChatGPT interface in your browser.
    - Start a conversation with ChatGPT.
-   - Above the plugin window, you will see four buttons: `PDF`, `Markdown`, `Text`, and `Upload`.
-   - Click on the desired format button (`PDF`, `Markdown`, or `Text`) to save the conversation in the corresponding format to your local computer.
+   - Above the plugin window, you will see three buttons: , `Markdown`, `Text`, and `Upload`.
+   - Click on the desired format button ( `Markdown`, or `Text`) to save the conversation in the corresponding format to your local computer.
    - The file will be downloaded to your default download location.
    
 2. Uploading Files:
@@ -65,10 +66,6 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 
 - Exporting Conversations:
 
-  - Export in `PDF` format
-
-    <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/pdf.png" alt="pdf" style="zoom:30%;" />
-
   - Export in `Markdown` format
 
     <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/markdown.png" alt="markdown" style="zoom:30%;" />
@@ -88,6 +85,8 @@ Once the ChatGPT File Plugin is installed, you can use it with the ChatGPT inter
 - `Prompt` prompts:
 
   <img src="https://github.com/Eunyn/ChatterKeep/blob/main/image/prompts.png" alt="prompts" style="zoom:30%;" />
+  
+- Chart Show:
 
 ## Contributing
 

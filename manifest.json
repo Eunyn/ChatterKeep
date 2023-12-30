@@ -13,11 +13,9 @@
       "js": [
         "./scripts/tools/xlsx.full.min.js",
         "./scripts/tools/mammoth.browser.min.js",
+        "./scripts/tools/pdf.worker.min.js",
         "./scripts/tools/pdf.min.js",
-        "./scripts/tools/simsunb-normal.js", 
-        "./scripts/tools/jspdf.umd.min.js", 
-        "./scripts/prompts/prompts-eng.js",
-        "./scripts/prompts/prompts-zh.js",
+        "./scripts/tools/prompts-eng-zh.js",
         "./scripts/tools/bootstrap.bundle.min.js",
         "./scripts/tools/modalCSS.js",
         "./scripts/tools/chart.js",
@@ -30,7 +28,9 @@
     }
   ],
   "icons": {
-    "48": "./image/icon.png"
+    "256": "./image/icon-256.png",
+    "128": "./image/icon-128.png",
+    "512": "./image/icon-512.png"
   },
   "action": {
     "default_popup": "popup.html"
