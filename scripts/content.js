@@ -675,8 +675,13 @@ function initExecute() {
         sentNode.style.right = '150px'
         sentNode.appendChild(spanElement)
         // document.body.appendChild(sentNode)
+
+        const aTag = document.createElement('a')
+        aTag.href = "javascript:void(0)"
+        aTag.appendChild(sentNode)
+
         const mainElement = document.querySelector('main')
-        mainElement.appendChild(sentNode)
+        mainElement.appendChild(aTag)
         
 
         showModalChart()
