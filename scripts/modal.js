@@ -118,7 +118,13 @@ function modalChart(month) {
     const dataLabels = Array.from({
         length: dayLen
     }, (_,i)=>`${month + 1}-${i + 1}`)
+
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    const valid = validMonthData(accessData)
+    if (!valid) {
+        alert(`${months[month]} contains invalid data.`)
+    }
+
     const myChart = new Chart(ctx,{
         type: 'line',
         data: {
@@ -226,4 +232,14 @@ function getMonthDays() {
     const monthWithDays = Array.from({length: 12}, (_, month) => getMonthDaysWithYear(year, month + 1))
 
     return monthWithDays
+}
+
+function validMonthData(accessData) {
+    for (let i = 0; i < accessData.length; i++) {
+        if (isNaN(accessData[i]) || accessData[i] < 0 || accessData >= 500) {
+            return false;
+        }
+    }
+
+    return true
 }
