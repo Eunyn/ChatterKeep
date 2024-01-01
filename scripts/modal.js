@@ -228,7 +228,7 @@ function getMonthDaysWithYear(year, month) {
 }
 
 function getMonthDays() {
-    const year = new Date().getYear()
+    const year = new Date().getFullYear()
     const monthWithDays = Array.from({length: 12}, (_, month) => getMonthDaysWithYear(year, month + 1))
 
     return monthWithDays
