@@ -30,11 +30,6 @@ function initModal() {
 }
 
 function initSentCounts() {
-    const date = new Date()
-    const month = date.getMonth()
-    const day = date.getDate()
-
-    let counts = 0
     const chatCounts = localStorage.getItem('chatSentCounts')
     if (chatCounts == null) {
         let data = {
@@ -52,20 +47,14 @@ function initSentCounts() {
             11: []
         };
 
-        for (let i = 0; i < day; i++) {
-            data[month].push(0)
+        const months = getMonthDays()
+        for (let i = 0; i < months.length; i++) {
+            const days = new Array(months[i]).fill(0)
+            data[i] = days
         }
+
         localStorage.setItem('chatSentCounts', JSON.stringify(data))
-    } else {
-        let data = JSON.parse(chatCounts)
-        if (day <= data[month].length) {
-            return
-        }
-        for (let i = data[month].length; i < day; i++) {
-            data[month].push(0)
-        }
-        localStorage.setItem('chatSentCounts', JSON.stringify(data))
-    }
+    } 
 }
 
 function updateSentCounts() {
@@ -123,19 +112,19 @@ function modalChart(month) {
         existingChart.destroy()
     }
 
-    const date = new Date()
     const accessData = JSON.parse(localStorage.getItem('chatSentCounts'))[month]
     month = Number(month)
+    const dayLen = getMonthDays()[month]
     const dataLabels = Array.from({
-        length: date.getDate()
+        length: dayLen
     }, (_,i)=>`${month + 1}-${i + 1}`)
-
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     const myChart = new Chart(ctx,{
         type: 'line',
         data: {
             labels: dataLabels,
             datasets: [{
-                label: 'Total Messages sent',
+                label: `Messages sent in ${months[month]}`,
                 data: accessData,
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
@@ -181,16 +170,60 @@ function insertMonthtoSelect() {
     }
     const datas = JSON.parse(chatCounts)
     const keys = Object.keys(datas)
+
+    const month = new Date().getMonth()
+    // Initially, insert current month
+    if (!selectElement.textContent.includes(months[month])) {
+        const option = document.createElement('option')
+        option.value = String(month)
+        option.textContent = months[month]
+        selectElement.appendChild(option)
+    }
+
+    // insert other months if the data is not null
     for (let i = keys.length - 1; i >= 0; i--) {
-        if (selectElement.textContent.indexOf(months[i]) != -1) {
+        if (selectElement.textContent.includes(months[i]) || i === month) {
             continue
         }
 
-        if (datas[`${i}`].length > 0) {
+        let flag = false
+        for (let j = 0; j < datas[`${i}`].length; j++) {
+            if (datas[`${i}`][j] > 0) {
+                flag = true
+                break
+            }
+        }
+        if (flag) {
             const option = document.createElement('option')
             option.value = String(i)
             option.textContent = months[i]
             selectElement.appendChild(option)
         }
     }
+}
+
+
+function isLeapYear(year) {
+    return (year % 400 === 0) || (year % 4 === 0 && year % 100 !== 0)
+}
+
+function getMonthDaysWithYear(year, month) {
+    switch (month) {
+    case 2:
+        return isLeapYear(year) ? 29 : 28
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+        return 30
+    default:
+        return 31
+    }
+}
+
+function getMonthDays() {
+    const year = new Date().getYear()
+    const monthWithDays = Array.from({length: 12}, (_, month) => getMonthDaysWithYear(year, month + 1))
+
+    return monthWithDays
 }
