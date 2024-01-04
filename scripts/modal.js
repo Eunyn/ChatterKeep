@@ -31,39 +31,15 @@ function initModal() {
 
 function initSentCounts() {
     const chatCounts = localStorage.getItem('chatSentCounts')
-    if (chatCounts == null) {
-        let data = {
-            0: [],
-            1: [],
-            2: [],
-            3: [],
-            4: [],
-            5: [],
-            6: [],
-            7: [],
-            8: [],
-            9: [],
-            10: [],
-            11: []
-        };
+    let datas = chatCounts != null ? JSON.parse(chatCounts) : {0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: [], 11: []};
 
-        // const months = getMonthDays()
-        // for (let i = 0; i < months.length; i++) {
-        //     const days = new Array(months[i]).fill(0)
-        //     data[i] = days
-        // }
-
-        localStorage.setItem('chatSentCounts', JSON.stringify(data))
-    } else {
-        const datas = JSON.parse(chatCounts)
-        const month = new Date().getMonth()
-        const day = new Date().getDate()
-        const len = datas[month].length
-        for (let i = len; i < day; i++) {
-            datas[month].push(0)
-        }
-        localStorage.setItem('chatSentCounts', JSON.stringify(datas))
+    const month = new Date().getMonth()
+    const day = new Date().getDate()
+    const len = datas[month].length
+    for (let i = len; i < day; i++) {
+        datas[month].push(0)
     }
+    localStorage.setItem('chatSentCounts', JSON.stringify(datas))
 }
 
 function updateSentCounts() {
