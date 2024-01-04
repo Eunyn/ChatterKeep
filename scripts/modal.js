@@ -47,14 +47,22 @@ function initSentCounts() {
             11: []
         };
 
-        const months = getMonthDays()
-        for (let i = 0; i < months.length; i++) {
-            const days = new Array(months[i]).fill(0)
-            data[i] = days
-        }
+        // const months = getMonthDays()
+        // for (let i = 0; i < months.length; i++) {
+        //     const days = new Array(months[i]).fill(0)
+        //     data[i] = days
+        // }
 
         localStorage.setItem('chatSentCounts', JSON.stringify(data))
-    } 
+    } else {
+        const datas = JSON.parse(chatCounts)
+        const month = new Date().getMonth()
+        const day = new Date().getDate()
+        const len = datas[month].length
+        for (let i = len; i < day; i++) {
+            datas[month].push(0)
+        }
+    }
 }
 
 function updateSentCounts() {
