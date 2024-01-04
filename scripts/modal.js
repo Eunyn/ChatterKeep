@@ -62,6 +62,7 @@ function initSentCounts() {
         for (let i = len; i < day; i++) {
             datas[month].push(0)
         }
+        localStorage.setItem('chatSentCounts', JSON.stringify(datas))
     }
 }
 
