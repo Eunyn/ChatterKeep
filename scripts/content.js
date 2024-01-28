@@ -510,9 +510,7 @@ function initExecute() {
     }
 
     function createCodeFile() {
-        let domClass = getCodeBlockByAIType();
-
-        const codeLists = document.querySelectorAll(domClass.codeBlock);
+        const codeLists = document.querySelectorAll('pre');
         codeLists.forEach(codeContainer=>{
             if (codeContainer.querySelector("#createfile")) {
                 return;
@@ -528,35 +526,49 @@ function initExecute() {
             createFileButton.style.backgroundColor = "#28a745";
             createFileButton.style.fontWeight = "300";
             createFileButton.addEventListener("click", async()=>{
-                const codeType = codeContainer.querySelector(domClass.codeType);
-                let typeLists = '{ "codes" : [' + '{"lang": "java", "suffix": ".java"},' + '{"lang": "javascript", "suffix": ".js"},' + '{"lang": "css", "suffix": ".css"},' + '{"lang": "python", "suffix": ".py"},' + '{"lang": "cpp", "suffix": ".cpp"},' + '{"lang": "c", "suffix": ".c"},' + '{"lang": "go", "suffix": ".go"},' + '{"lang": "html", "suffix": ".html"},' + '{"lang": "rust", "suffix": ".rs"},' + '{"lang": "php", "suffix": ".php"},' + '{"lang": "shell", "suffix": ".sh"},' + '{"lang": "mysql", "suffix": ".sql"},' + '{"lang": "c#", "suffix": ".cs"},' + '{"lang": "json", "suffix": ".json"},' + '{"lang": "properties", "suffix": ".properties"},' + '{"lang": "ini", "suffix": ".ini"},' + '{"lang": "xml", "suffix": ".xml"},' + '{"lang": "kotlin ", "suffix": ".kt"},' + '{"lang": "swift", "suffix": ".swift"},' + '{"lang": "jsp", "suffix": ".jsp"},' + '{"lang": "markdown", "suffix": ".md"},' + '{"lang": "R", "suffix": ".R"}]}';
+                const codeType = codeContainer.querySelector('span');
+                const typeLists = [
+                                      {"lang": "java", "suffix": ".java"},
+                                      {"lang": "javascript", "suffix": ".js"},
+                                      {"lang": "css", "suffix": ".css"},
+                                      {"lang": "python", "suffix": ".py"},
+                                      {"lang": "cpp", "suffix": ".cpp"},
+                                      {"lang": "c", "suffix": ".c"},
+                                      {"lang": "go", "suffix": ".go"},
+                                      {"lang": "html", "suffix": ".html"},
+                                      {"lang": "rust", "suffix": ".rs"},
+                                      {"lang": "php", "suffix": ".php"},
+                                      {"lang": "shell", "suffix": ".sh"},
+                                      {"lang": "mysql", "suffix": ".sql"},
+                                      {"lang": "c#", "suffix": ".cs"},
+                                      {"lang": "json", "suffix": ".json"},
+                                      {"lang": "properties", "suffix": ".properties"},
+                                      {"lang": "yaml", "suffix": ".yaml"},
+                                      {"lang": "ini", "suffix": ".ini"},
+                                      {"lang": "xml", "suffix": ".xml"},
+                                      {"lang": "kotlin ", "suffix": ".kt"},
+                                      {"lang": "swift", "suffix": ".swift"},
+                                      {"lang": "jsp", "suffix": ".jsp"},
+                                      {"lang": "markdown", "suffix": ".md"},
+                                      {"lang": "R", "suffix": ".R"},
+                                      {"lang": "typescript", "suffix": ".ts"},
+                                      {"lang": "vue", "suffix": ".vue"},
+                                      {"lang": "erlang", "suffix": ".erl"},
+                                      {"lang": "ruby", "suffix": ".rb"}
+                                    ];
 
-                types = JSON.parse(typeLists);
                 let type = '.txt';
-                let typeFound = false;
                 if (codeType) {
-                    for (let i = 0; i < types.codes.length; i++) {
-                        if (codeType.textContent.trim() === types.codes[i].lang) {
-                            type = types.codes[i].suffix;
-                            typeFound = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (!typeFound) {
-                    for (let i = 0; i < types.codes.length; i++) {
-                        if (codeType.textContent.trim() === types.codes[i].suffix.substr(1)) {
-                            type = types.codes[i].suffix;
+                    for (let i = 0; i < typeLists.length; i++) {
+                        if (codeType.textContent.trim() === typeLists[i].lang) {
+                            type = typeLists[i].suffix;
                             break;
                         }
                     }
                 }
 
                 const filename = `new${type}`;
-
-                const parentDiv = codeContainer.parentElement;
-                const codeContent = parentDiv.querySelector(domClass.code).textContent;
+                const codeContent = codeContainer.querySelector('code').textContent;
 
                 const blob = new Blob([codeContent],{
                     type: "text/plain"
@@ -569,8 +581,7 @@ function initExecute() {
             );
 
             createFileButton.style.marginRight = "220px";
-
-            codeContainer.insertAdjacentElement("afterbegin", createFileButton);
+            codeContainer.firstChild.firstChild.insertAdjacentElement("afterbegin", createFileButton);
         }
         );
     }
@@ -580,8 +591,7 @@ function initExecute() {
         mutationsList.forEach((mutation)=>{
 
             mutation.addedNodes.forEach((node)=>{
-                let domClass = getCodeBlockByAIType();
-                if (node.nodeType === Node.ELEMENT_NODE && node.matches(domClass.codeBlock)) {
+                if (node.nodeType === Node.ELEMENT_NODE && node.matches('pre')) {
                     createCodeFile();
                 }
 
@@ -596,6 +606,7 @@ function initExecute() {
 
                 // Monitor for the dynamically appearing button ===> Save & Submit
                 if (node.nodeType === Node.ELEMENT_NODE && node.matches('[class="text-center mt-2 flex justify-center"]')) {
+                    //const nodes = document.qu
                     const saveSButton = document.querySelector('[class="btn relative btn-primary mr-2"]');
                     if (!saveSButton.myEventListener) {
 
@@ -614,16 +625,6 @@ function initExecute() {
         childList: true,
         subtree: true
     });
-
-    function getCodeBlockByAIType() {
-        let domClass = {
-            codeBlock: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md',
-            codeType: '.flex.items-center.relative.text-gray-200.bg-gray-800.px-4.py-2.text-xs.font-sans.justify-between.rounded-t-md span',
-            code: '.p-4.overflow-y-auto code'
-        };
-
-        return domClass;
-    }
 
     function initMessageCountDom() {
         // Check if the elements already exist
